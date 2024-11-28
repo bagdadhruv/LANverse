@@ -21,6 +21,14 @@ header h1 {
     font-size: 3rem;
 }
 
+/* Styling the logo */
+.logo {
+    width: 150px;  /* Set the width */
+    height: auto;  /* Maintain aspect ratio */
+    margin-top: 20px;
+}
+
+
 .about, .features {
     margin: 3rem 0;
 }
