@@ -3,38 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LANverse - Revolutionizing LAN Parties</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LANverse - Home</title>
+    <link rel="stylesheet" href="css/styles.css">  <!-- Link to the main stylesheet -->
+    <link rel="icon" href="images/logo.png">       <!-- Logo for the favicon -->
 </head>
 <body>
+    <!-- Header Section -->
     <header>
-        <!-- Embed the WebP logo -->
-        <img src="assets/" alt="LANverse Logo" class="logo">
-        <h1>Welcome to LANverse</h1>
-        <p>The ultimate platform for organizing community-driven LAN parties!</p>
+        <div class="logo">
+            <img src="images/logo.png" alt="LANverse Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="parties.html">Parties</a></li>
+                <li><a href="feed.html">Feed</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="login.html">Login</a></li> <!-- Only show this if the user is not logged in -->
+            </ul>
+        </nav>
     </header>
 
-    <section class="about">
-        <h2>Why LANverse?</h2>
-        <p>LANverse is built on the idea that the best events happen when everyone contributes. From choosing the venue to selecting games, every participant's input is valued and celebrated.</p>
-    </section>
+    <!-- Main Content Section -->
+    <main>
+        <section class="feed-section">
+            <div class="feed-header">
+                <h1>Welcome to LANverse</h1>
+                <p>Explore the latest updates, join LAN parties, and connect with the community!</p>
+            </div>
 
-    <section class="features">
-        <h2>Key Features</h2>
-        <ul>
-            <li>Event Creation by Anyone</li>
-            <li>Mandatory Resource Sharing</li>
-            <li>Collaborative Game Selection</li>
-            <li>Interactive Event Dashboard</li>
-            <li>Badges & Recognition</li>
-        </ul>
-    </section>
+            <!-- Post Creation Section -->
+            <div class="create-post">
+                <textarea placeholder="What's happening in the LANverse?" rows="3"></textarea>
+                <button class="btn-post">Post</button>
+            </div>
 
+            <!-- Feed Posts Section -->
+            <div class="feed-posts">
+                <div class="post">
+                    <div class="post-header">
+                        <div class="user-info">
+                            <img src="images/avatars/user1.png" alt="User 1 Avatar" class="avatar">
+                            <span class="username">User1</span>
+                        </div>
+                        <span class="post-time">2 hours ago</span>
+                    </div>
+                    <div class="post-content">
+                        <p>This is a new LAN party announcement! Join us this weekend!</p>
+                        <img src="images/party-banner.jpg" alt="Party Banner" class="post-image">
+                    </div>
+                    <div class="post-footer">
+                        <button class="btn-like">👍 Like</button>
+                        <button class="btn-comment">💬 Comment</button>
+                        <button class="btn-share">🔗 Share</button>
+                    </div>
+                </div>
+
+                <!-- More posts can be added here dynamically -->
+            </div>
+        </section>
+
+        <!-- Side Section (Optional) -->
+        <section class="side-section">
+            <h2>Upcoming Parties</h2>
+            <ul>
+                <li><a href="party.html">LAN Party #1 - Dec 5</a></li>
+                <li><a href="party.html">LAN Party #2 - Dec 10</a></li>
+                <li><a href="party.html">LAN Party #3 - Dec 15</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
     <footer>
-        <p>Join us and make LAN parties community-driven!</p>
-        <a href="https://github.com/your-username/LANverse" target="_blank">Contribute to LANverse</a>
+        <div class="footer-content">
+            <p>&copy; 2024 LANverse. All Rights Reserved.</p>
+            <div class="footer-links">
+                <a href="about.html">About</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+        </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- External JS -->
+    <script src="js/main.js"></script>  <!-- Link to main JS file -->
 </body>
 </html>
