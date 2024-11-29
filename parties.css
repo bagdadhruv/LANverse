@@ -1,0 +1,288 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+/* Header */
+header {
+    background-color: #222;
+    color: #fff;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo img {
+    width: 150px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li:last-child {
+    margin-right: 0;
+}
+
+nav a {
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 8px 16px;
+}
+
+nav a:hover {
+    background-color: #444;
+    border-radius: 5px;
+}
+
+/* Main Content */
+main {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+}
+
+.feed-section {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
+}
+
+.feed-header h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.create-post {
+    margin-top: 20px;
+}
+
+.create-post textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    resize: none;
+}
+
+.create-post .btn-post {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-post .btn-post:hover {
+    background-color: #218838;
+}
+
+/* Feed Posts */
+.feed-posts {
+    margin-top: 20px;
+}
+
+.post {
+    background-color: #fafafa;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.post-time {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.post-content {
+    margin-top: 10px;
+}
+
+.post-content p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.post-image {
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.post-footer {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-footer button {
+    background-color: transparent;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #007bff;
+}
+
+.post-footer button:hover {
+    color: #0056b3;
+}
+
+/* Side Section */
+.side-section {
+    width: 25%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.side-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.side-section ul {
+    list-style: none;
+}
+
+.side-section ul li {
+    margin-bottom: 10px;
+}
+
+.side-section ul li a {
+    color: #007bff;
+}
+
+.side-section ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+footer .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+footer .footer-links a {
+    margin-left: 20px;
+    color: #fff;
+    font-size: 1rem;
+}
+
+footer .footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* Parties Section */
+.parties-section {
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+
+.parties-section h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.party {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.party-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.party-header h2 {
+    font-size: 1.8rem;
+}
+
+.party-date {
+    font-size: 1rem;
+    color: #888;
+}
+
+.party-description {
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.btn-rsvp {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-rsvp:hover {
+    background-color: #218838;
+}
