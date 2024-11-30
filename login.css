@@ -1,0 +1,135 @@
+/* Login Page Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #eef2f3;
+}
+
+header {
+    background-color: #2d3e50;
+    padding: 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo img {
+    width: 50px;
+}
+
+header nav ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    margin-right: 20px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header nav ul li a.active {
+    text-decoration: underline;
+}
+
+main {
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.login-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-container h1 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.login-container p {
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.login-container label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #555;
+    text-align: left;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.login-container button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 1rem;
+}
+
+.login-container button:hover {
+    background-color: #0056b3;
+}
+
+.login-container .signup-link {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.login-container .signup-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-container .signup-link a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    background-color: #2d3e50;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+footer .footer-links {
+    margin-top: 10px;
+}
+
+footer .footer-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
