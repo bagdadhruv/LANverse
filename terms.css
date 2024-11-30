@@ -1,0 +1,93 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+header {
+    background: #2c3e50;
+    color: #fff;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo img {
+    height: 50px;
+}
+
+header .nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 15px;
+}
+
+header .nav a:hover {
+    text-decoration: underline;
+}
+
+.terms {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.terms h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.terms p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.terms-section h2 {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-top: 1.5rem;
+}
+
+.terms-section ul {
+    padding-left: 1.5rem;
+    list-style-type: disc;
+}
+
+.terms-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.contact {
+    font-weight: bold;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.contact a {
+    color: #1abc9c;
+    text-decoration: none;
+}
+
+.contact a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #2c3e50;
+    color: #fff;
+}
+
+footer a {
+    color: #1abc9c;
+    text-decoration: none;
+}
