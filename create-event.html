@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Event - LANverse</title>
+  <meta name="description" content="Create your own local event with resource pooling">
+  <meta name="theme-color" content="#00eaff">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/create-event.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body>
+  <!-- Header with Navigation -->
+  <header>
+    <nav class="navbar">
+      <div class="nav-brand">
+        <img src="assets/logo.webp" alt="LANverse Logo" class="logo-img">
+        <h1 class="logo-text">LANverse</h1>
+      </div>
+      
+      <!-- Mobile Menu Toggle -->
+      <button class="mobile-menu-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <!-- Navigation Links -->
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="create-event.html" class="nav-link active">Create Event</a></li>
+        <li><a href="profile.html" class="nav-link">Profile</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Progress Bar -->
+    <div class="progress-container">
+      <div class="container">
+        <div class="progress-bar">
+          <div class="progress-step active" data-step="1">
+            <div class="step-number">1</div>
+            <div class="step-label">Basic Info</div>
+          </div>
+          <div class="progress-step" data-step="2">
+            <div class="step-number">2</div>
+            <div class="step-label">Location & Time</div>
+          </div>
+          <div class="progress-step" data-step="3">
+            <div class="step-number">3</div>
+            <div class="step-label">Resources</div>
+          </div>
+          <div class="progress-step" data-step="4">
+            <div class="step-number">4</div>
+            <div class="step-label">Review</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Creation Form -->
+    <div class="form-container">
+      <div class="container">
+        <form id="create-event-form" class="lanverse-form" data-form-type="create-event">
+          
+          <!-- Step 1: Basic Information -->
+          <div class="form-step active" data-step="1">
+            <div class="step-header">
+              <h2>Event Basic Information</h2>
+              <p>Let's start with the basics of your event</p>
+            </div>
+            
+            <div class="form-group">
+              <label for="event-title">Event Title *</label>
+              <input type="text" id="event-title" name="title" required 
+                     placeholder="e.g., Weekend Gaming Marathon">
+              <small class="form-help">Choose a catchy title that describes your event</small>
+            </div>
+            
+            <div class="form-group">
+              <label for="event-description">Description *</label>
+              <textarea id="event-description" name="description" rows="4" required 
+                        placeholder="Tell people what your event is about..."></textarea>
+              <small class="form-help">Describe what people can expect at your event</small>
+            </div>
+            
+            <div class="form-group">
+              <label for="event-category">Category *</label>
+              <select id="event-category" name="category" required>
+                <option value="">Select a category</option>
+                <option value="gaming">Gaming</option>
+                <option value="tech">Tech & Programming</option>
+                <option value="social">Social & Networking</option>
+                <option value="creative">Creative & Arts</option>
+                <option value="fitness">Fitness & Sports</option>
+                <option value="education">Education & Learning</option>
+                <option value="food">Food & Dining</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="max-attendees">Maximum Attendees *</label>
+              <input type="number" id="max-attendees" name="maxAttendees" min="2" max="100" required 
+                     placeholder="20">
+              <small class="form-help">How many people can attend your event?</small>
+            </div>
+          </div>
+
+          <!-- Step 2: Location & Time -->
+          <div class="form-step" data-step="2">
+            <div class="step-header">
+              <h2>Location & Time</h2>
+              <p>When and where will your event take place?</p>
+            </div>
+            
+            <div class="form-group">
+              <label for="event-location">Location *</label>
+              <input type="text" id="event-location" name="location" required 
+                     placeholder="e.g., Downtown Community Center">
+              <small class="form-help">Where will your event be held?</small>
+            </div>
+            
+            <div class="form-group">
+              <label for="event-address">Full Address</label>
+              <input type="text" id="event-address" name="address" 
+                     placeholder="123 Main St, City, State 12345">
+              <small class="form-help">Optional: Full address for better directions</small>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="event-date">Date *</label>
+                <input type="date" id="event-date" name="date" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="event-time">Time *</label>
+                <input type="time" id="event-time" name="time" required>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="event-duration">Duration (hours)</label>
+              <input type="number" id="event-duration" name="duration" min="1" max="24" 
+                     placeholder="3">
+              <small class="form-help">How long will your event last?</small>
+            </div>
+          </div>
+
+          <!-- Step 3: Resources -->
+          <div class="form-step" data-step="3">
+            <div class="step-header">
+              <h2>Resource Requirements</h2>
+              <p>What resources do you need from attendees?</p>
+            </div>
+            
+            <div class="form-group">
+              <label for="ticket-price">Ticket Price ($)</label>
+              <input type="number" id="ticket-price" name="ticketPrice" min="0" step="0.01" 
+                     placeholder="0.00">
+              <small class="form-help">Set to $0 for free events</small>
+            </div>
+            
+            <div class="form-group">
+              <label>Required Resources</label>
+              <div class="resources-container">
+                <div class="resource-item">
+                  <input type="text" placeholder="Resource type (e.g., Gaming Console)" 
+                         class="resource-type">
+                  <input type="number" placeholder="Qty" min="1" class="resource-qty">
+                  <button type="button" class="btn-remove-resource">Remove</button>
+                </div>
+              </div>
+              <button type="button" id="add-resource" class="btn btn-secondary">
+                + Add Resource
+              </button>
+              <small class="form-help">Add resources that attendees can contribute instead of or in addition to payment</small>
+            </div>
+            
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="allow-resource-only" name="allowResourceOnly">
+                Allow joining with resources only (no payment required)
+              </label>
+            </div>
+            
+            <div class="form-group">
+              <label for="event-tags">Tags (comma-separated)</label>
+              <input type="text" id="event-tags" name="tags" 
+                     placeholder="gaming, fun, community, weekend">
+              <small class="form-help">Add tags to help people find your event</small>
+            </div>
+          </div>
+
+          <!-- Step 4: Review -->
+          <div class="form-step" data-step="4">
+            <div class="step-header">
+              <h2>Review Your Event</h2>
+              <p>Please review all details before creating your event</p>
+            </div>
+            
+            <div class="event-preview">
+              <div class="preview-section">
+                <h3>Basic Information</h3>
+                <div class="preview-item">
+                  <strong>Title:</strong> <span id="preview-title">-</span>
+                </div>
+                <div class="preview-item">
+                  <strong>Description:</strong> <span id="preview-description">-</span>
+                </div>
+                <div class="preview-item">
+                  <strong>Category:</strong> <span id="preview-category">-</span>
+                </div>
+                <div class="preview-item">
+                  <strong>Max Attendees:</strong> <span id="preview-max-attendees">-</span>
+                </div>
+              </div>
+              
+              <div class="preview-section">
+                <h3>Location & Time</h3>
+                <div class="preview-item">
+                  <strong>Location:</strong> <span id="preview-location">-</span>
+                </div>
+                <div class="preview-item">
+                  <strong>Date:</strong> <span id="preview-date">-</span>
+                </div>
+                <div class="preview-item">
+                  <strong>Time:</strong> <span id="preview-time">-</span>
+                </div>
+                <div class="preview-item">
+                  <strong>Duration:</strong> <span id="preview-duration">-</span>
+                </div>
+              </div>
+              
+              <div class="preview-section">
+                <h3>Resources</h3>
+                <div class="preview-item">
+                  <strong>Ticket Price:</strong> <span id="preview-price">-</span>
+                </div>
+                <div class="preview-item">
+                  <strong>Required Resources:</strong>
+                  <div id="preview-resources">-</div>
+                </div>
+                <div class="preview-item">
+                  <strong>Tags:</strong> <span id="preview-tags">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="form-navigation">
+            <button type="button" id="prev-step" class="btn btn-secondary" style="display: none;">
+              Previous
+            </button>
+            <button type="button" id="next-step" class="btn btn-primary">
+              Next
+            </button>
+            <button type="submit" id="submit-event" class="btn btn-primary" style="display: none;">
+              Create Event
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>LANverse</h3>
+          <p>Community-driven local events with resource sharing</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="create-event.html">Create Event</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 LANverse. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="js/app.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/create-event.js"></script>
+</body>
+</html>
