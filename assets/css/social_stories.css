@@ -1,0 +1,196 @@
+html, body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: #181824;
+}
+
+.social-stories-container {
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0;
+  margin: 0;
+}
+
+.party-poster-outer {
+  width: 100vw;
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  background: #23234d;
+}
+
+.party-poster {
+  width: 100vw;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+}
+
+.party-poster-blur {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(24,24,36,0.0) 60%, rgba(24,24,36,0.8) 100%);
+  filter: blur(18px) brightness(1.2);
+  opacity: 0.7;
+  border-radius: 0;
+}
+
+.party-avatar-info {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  display: flex;
+  align-items: center;
+  z-index: 3;
+  gap: 10px;
+}
+
+.host-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #181824;
+  background: linear-gradient(135deg, #ff4ecd, #00eaff, #a259ff);
+  padding: 2px;
+  cursor: pointer;
+}
+
+.event-tag {
+  background: linear-gradient(90deg, #00eaff, #ff4ecd);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1em;
+  border-radius: 16px;
+  padding: 6px 14px;
+  box-shadow: 0 0 8px #00eaff;
+  margin-left: 4px;
+}
+
+.story-content-area {
+  flex: 1 1 auto;
+  width: 100vw;
+  height: calc(100vh - 180px - 56px); /* 56px for navbar */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.story-carousel {
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.story-slide {
+  width: 100vw;
+  height: 100%;
+  position: absolute;
+  left: 0; top: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s, transform 0.4s;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.story-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  position: relative;
+  z-index: 3;
+}
+
+.story-media {
+  width: 100vw;
+  height: 100%;
+  background: #222;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.story-media img, .story-media video {
+  width: 100vw;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  display: block;
+}
+
+.story-username {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(24,24,36,0.65);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1em;
+  padding: 7px 18px 7px 14px;
+  border-radius: 18px;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+}
+
+/* Navbar styles removed - using inline styles from social.html */
+
+@media (max-width: 600px) {
+  .party-poster-outer {
+    height: 110px;
+    min-height: 90px;
+    max-height: 140px;
+  }
+  .story-content-area {
+    height: calc(100vh - 110px - 56px);
+  }
+  .story-media, .story-media img, .story-media video {
+    width: 100vw;
+    border-radius: 0;
+  }
+}
+
+@media (min-width: 700px) {
+  .party-avatar-info {
+    left: 32px;
+    bottom: 32px;
+    gap: 18px;
+  }
+  .host-avatar {
+    width: 72px;
+    height: 72px;
+  }
+  .event-tag {
+    font-size: 1.18em;
+    padding: 10px 22px;
+  }
+} 

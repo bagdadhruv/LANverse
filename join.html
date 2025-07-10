@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LANverse – Join Party</title>
+  <link rel="stylesheet" href="assets/css/lanverse.css">
+  <link rel="stylesheet" href="assets/css/join_wizard.css">
+</head>
+<body>
+  <div class="wizard-container" id="joinWizardContainer">
+    <div class="step-indicator" id="joinStepIndicator">
+      <div class="step-dot active" data-step="0">1</div>
+      <div class="step-dot" data-step="1">2</div>
+      <div class="step-dot" data-step="2">3</div>
+      <div class="step-dot" data-step="3">4</div>
+    </div>
+    <!-- Step 1: Choose Join Type -->
+    <section class="glass-card active" id="join-step-0">
+      <h2>How do you want to join?</h2>
+      <div class="join-type-options">
+        <div class="join-card" id="contributeOption">
+          <span class="emoji">🧃</span>
+          <h3>Contribute Resources</h3>
+          <p>Bring something to the party!</p>
+        </div>
+        <div class="join-card" id="ticketOption">
+          <span class="emoji">🎟️</span>
+          <h3>Buy Ticket</h3>
+          <p>Secure your spot with a ticket.</p>
+        </div>
+      </div>
+      <div class="wizard-btns">
+        <button type="button" class="wizard-btn active" id="join-next-0" disabled>Next</button>
+      </div>
+    </section>
+    <!-- Step 2A: Select Resources -->
+    <section class="glass-card" id="join-step-1A">
+      <h2>Pick items to contribute</h2>
+      <div id="resourceList" class="resource-list"></div>
+      <div class="wizard-btns">
+        <button type="button" class="wizard-btn" id="join-back-1A">Back</button>
+        <button type="button" class="wizard-btn" id="join-next-1A" disabled>Next</button>
+      </div>
+    </section>
+    <!-- Step 2B: Select Ticket -->
+    <section class="glass-card" id="join-step-1B">
+      <h2>Book Your Spot</h2>
+      <div id="ticketTiers" class="ticket-tiers"></div>
+      <div class="wizard-btns">
+        <button type="button" class="wizard-btn" id="join-back-1B">Back</button>
+        <button type="button" class="wizard-btn" id="join-next-1B" disabled>Next</button>
+      </div>
+    </section>
+    <!-- Step 3: Add Vibe Message -->
+    <section class="glass-card" id="join-step-2">
+      <h2>Send a message to the host 🎤</h2>
+      <textarea id="vibeMessage" placeholder="Excited to vibe with y’all 🔥"></textarea>
+      <div class="wizard-btns">
+        <button type="button" class="wizard-btn" id="join-back-2">Back</button>
+        <button type="button" class="wizard-btn" id="join-next-2">Next</button>
+      </div>
+    </section>
+    <!-- Step 4: Confirmation -->
+    <section class="glass-card" id="join-step-3">
+      <h2>You’re all set!</h2>
+      <div id="summary" class="summary-box"></div>
+      <div class="wizard-btns">
+        <button type="button" class="wizard-btn" id="join-back-3">Back</button>
+        <button type="button" class="wizard-btn neon-glow" id="confirmJoin">Confirm & Join</button>
+      </div>
+    </section>
+  </div>
+  <script src="assets/js/join_wizard.js"></script>
+</body>
+</html>

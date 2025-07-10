@@ -1,0 +1,9 @@
+{
+  "name": "lanverse-mvp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "mongodb": "^5.9.2"
+  }
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LANverse HTTPS Test</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#a259ff">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+      color: white;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .test-card {
+      background: rgba(26, 26, 46, 0.8);
+      backdrop-filter: blur(20px);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin: 1rem 0;
+      border: 1px solid rgba(162, 89, 255, 0.2);
+    }
+    .status {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      margin: 0.5rem;
+      display: inline-block;
+    }
+    .status.success {
+      background: rgba(76, 175, 80, 0.2);
+      color: #4caf50;
+      border: 1px solid #4caf50;
+    }
+    .status.warning {
+      background: rgba(255, 152, 0, 0.2);
+      color: #ff9800;
+      border: 1px solid #ff9800;
+    }
+    .status.error {
+      background: rgba(244, 67, 54, 0.2);
+      color: #f44336;
+      border: 1px solid #f44336;
+    }
+    .install-btn {
+      background: linear-gradient(135deg, #ff6b9d, #a259ff);
+      color: white;
+      border: none;
+      border-radius: 0.75rem;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 1rem;
+      transition: all 0.3s ease;
+    }
+    .install-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(162, 89, 255, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔒 LANverse HTTPS Test</h1>
+    <p>Testing HTTPS connection and PWA installation</p>
+
+    <div class="test-card">
+      <h2>HTTPS Connection</h2>
+      <div id="https-status" class="status">Checking...</div>
+      <p>Your connection should be secure (HTTPS)</p>
+    </div>
+
+    <div class="test-card">
+      <h2>PWA Installation</h2>
+      <div id="pwa-status" class="status">Checking...</div>
+      <button id="install-btn" class="install-btn" style="display: none;">
+        📱 Install LANverse PWA
+      </button>
+    </div>
+
+    <div class="test-card">
+      <h2>Quick Actions</h2>
+      <button onclick="window.location.href='index.html'" class="install-btn">
+        🏠 Go to Landing Page
+      </button>
+      <button onclick="window.location.href='auth.html'" class="install-btn">
+        🔐 Go to Auth Page
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let deferredPrompt;
+
+    // Check HTTPS status
+    function checkHTTPS() {
+      const httpsStatus = document.getElementById('https-status');
+      if (window.location.protocol === 'https:') {
+        httpsStatus.className = 'status success';
+        httpsStatus.textContent = '✅ HTTPS Connected';
+      } else {
+        httpsStatus.className = 'status error';
+        httpsStatus.textContent = '❌ HTTP (Not Secure)';
+      }
+    }
+
+    // Check PWA status
+    function checkPWAStatus() {
+      const pwaStatus = document.getElementById('pwa-status');
+      const installBtn = document.getElementById('install-btn');
+      
+      if ('serviceWorker' in navigator) {
+        pwaStatus.className = 'status success';
+        pwaStatus.textContent = '✅ PWA Supported';
+      } else {
+        pwaStatus.className = 'status error';
+        pwaStatus.textContent = '❌ PWA Not Supported';
+      }
+    }
+
+    // Handle install prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('Install prompt triggered');
+      e.preventDefault();
+      deferredPrompt = e;
+      
+      const pwaStatus = document.getElementById('pwa-status');
+      const installBtn = document.getElementById('install-btn');
+      
+      pwaStatus.className = 'status warning';
+      pwaStatus.textContent = '📱 Ready to Install';
+      installBtn.style.display = 'inline-block';
+    });
+
+    // Install button click
+    document.getElementById('install-btn').addEventListener('click', async () => {
+      if (!deferredPrompt) {
+        console.log('No install prompt available');
+        return;
+      }
+
+      try {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log('Install prompt outcome:', outcome);
+        
+        if (outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+          const pwaStatus = document.getElementById('pwa-status');
+          pwaStatus.className = 'status success';
+          pwaStatus.textContent = '✅ PWA Installed!';
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        
+        deferredPrompt = null;
+      } catch (error) {
+        console.error('Error during installation:', error);
+      }
+    });
+
+    // Initialize on page load
+    window.addEventListener('load', () => {
+      checkHTTPS();
+      checkPWAStatus();
+    });
+  </script>
+</body>
+</html> 

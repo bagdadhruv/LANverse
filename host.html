@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Host Party Wizard – LANverse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --glass-bg: rgba(30, 30, 40, 0.55);
+      --glass-bg-light: rgba(255,255,255,0.55);
+      --neon: #00ffe7;
+      --neon2: #ff00e0;
+      --accent: #1a1a2e;
+      --text: #fff;
+      --text-light: #222;
+      --card-radius: 1.5rem;
+      --transition: 0.5s cubic-bezier(.77,0,.18,1);
+      --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --glass-bg: rgba(255,255,255,0.7);
+        --glass-bg-light: rgba(255,255,255,0.9);
+        --neon: #00e0ff;
+        --neon2: #ff00e0;
+        --accent: #fff;
+        --text: #222;
+        --text-light: #fff;
+      }
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #181a2b 0%, #232946 100%);
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      transition: background var(--transition);
+    }
+    .wizard-container {
+      width: 100vw;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 0 2rem 0;
+      background: none;
+    }
+    .glass-card {
+      background: var(--glass-bg);
+      box-shadow: var(--shadow);
+      border-radius: var(--card-radius);
+      backdrop-filter: blur(18px) saturate(1.2);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+      border: 1.5px solid var(--neon);
+      max-width: 420px;
+      width: 95vw;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      position: relative;
+      transition: box-shadow var(--transition), background var(--transition);
+      min-height: 420px;
+      display: none;
+      opacity: 0;
+      transform: translateY(40px) scale(0.98);
+      transition: opacity var(--transition), transform var(--transition);
+    }
+    .glass-card.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      z-index: 2;
+    }
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 2rem;
+      user-select: none;
+    }
+    .step-dot {
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 50%;
+      background: var(--glass-bg-light);
+      border: 2.5px solid var(--neon2);
+      color: var(--neon2);
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 0 var(--neon2);
+      transition: box-shadow 0.3s, background 0.3s, color 0.3s;
+      opacity: 0.7;
+    }
+    .step-dot.active {
+      background: var(--neon2);
+      color: #fff;
+      box-shadow: 0 0 12px 2px var(--neon2);
+      opacity: 1;
+    }
+    .step-dot.completed {
+      background: var(--neon);
+      color: #222;
+      border-color: var(--neon);
+      box-shadow: 0 0 8px 2px var(--neon);
+      opacity: 1;
+    }
+    .step-label {
+      font-size: 0.8rem;
+      color: var(--neon2);
+      margin-top: 0.2rem;
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+    .wizard-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .wizard-form label {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: var(--neon);
+      letter-spacing: 0.01em;
+    }
+    .wizard-form input,
+    .wizard-form select,
+    .wizard-form textarea {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 0.8rem;
+      border: 1.5px solid var(--neon2);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      margin-bottom: 0.2rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 0 0 0 var(--neon);
+    }
+    .wizard-form input:focus,
+    .wizard-form select:focus,
+    .wizard-form textarea:focus {
+      border-color: var(--neon);
+      box-shadow: 0 0 8px 2px var(--neon);
+      background: rgba(0,255,231,0.08);
+    }
+    .wizard-form input[type="file"] {
+      padding: 0.3rem 0;
+      background: none;
+      border: none;
+      box-shadow: none;
+      color: var(--neon2);
+    }
+    .cover-preview {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 1rem;
+      margin-bottom: 0.5rem;
+      border: 1.5px solid var(--neon2);
+      display: none;
+    }
+    .wizard-btns {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .wizard-btn {
+      flex: 1 1 0;
+      padding: 0.9rem 0;
+      border-radius: 0.8rem;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--neon2), var(--neon));
+      color: #fff;
+      box-shadow: 0 0 12px 2px var(--neon2);
+      cursor: pointer;
+      transition: background 0.3s, box-shadow 0.3s, opacity 0.3s;
+      opacity: 0.7;
+    }
+    .wizard-btn.active {
+      opacity: 1;
+      box-shadow: 0 0 18px 4px var(--neon);
+    }
+    .wizard-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .tag-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.3rem;
+    }
+    .tag-pill {
+      padding: 0.5rem 1.1rem;
+      border-radius: 2rem;
+      background: rgba(0,255,231,0.13);
+      color: var(--neon2);
+      border: 1.5px solid var(--neon2);
+      font-size: 0.98rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 0 0 var(--neon2);
+    }
+    .tag-pill.selected {
+      background: var(--neon2);
+      color: #fff;
+      border-color: var(--neon2);
+      box-shadow: 0 0 8px 2px var(--neon2);
+    }
+    .tag-pill.trending {
+      border-style: dashed;
+      border-color: var(--neon);
+      color: var(--neon);
+    }
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 0.7rem;
+    }
+    .toggle-switch input[type="checkbox"] {
+      width: 2.2rem;
+      height: 1.2rem;
+      appearance: none;
+      background: #222;
+      border-radius: 1rem;
+      outline: none;
+      transition: background 0.3s;
+      position: relative;
+      border: 1.5px solid var(--neon2);
+      cursor: pointer;
+    }
+    .toggle-switch input[type="checkbox"]:checked {
+      background: var(--neon2);
+    }
+    .toggle-switch input[type="checkbox"]::before {
+      content: '';
+      position: absolute;
+      left: 0.2rem;
+      top: 0.15rem;
+      width: 0.9rem;
+      height: 0.9rem;
+      background: #fff;
+      border-radius: 50%;
+      transition: left 0.3s, background 0.3s;
+      box-shadow: 0 0 6px 1px var(--neon2);
+    }
+    .toggle-switch input[type="checkbox"]:checked::before {
+      left: 1.1rem;
+      background: var(--neon2);
+    }
+    .contrib-list {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .contrib-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .contrib-item input[type="text"],
+    .contrib-item input[type="number"] {
+      flex: 1 1 0;
+      min-width: 0;
+      margin-bottom: 0;
+    }
+    .contrib-item .remove-item {
+      background: none;
+      border: none;
+      color: var(--neon2);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0 0.3rem;
+      transition: color 0.2s;
+    }
+    .contrib-item .remove-item:hover {
+      color: #ff3b3b;
+    }
+    .add-item-btn {
+      background: none;
+      border: 1.5px dashed var(--neon2);
+      color: var(--neon2);
+      border-radius: 2rem;
+      padding: 0.4rem 1.2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.2rem;
+      margin-bottom: 0.5rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .add-item-btn:hover {
+      background: var(--neon2);
+      color: #fff;
+    }
+    .accordion {
+      border-radius: 1rem;
+      overflow: hidden;
+      margin-bottom: 0.7rem;
+      background: rgba(0,255,231,0.07);
+      border: 1.5px solid var(--neon2);
+    }
+    .accordion-header {
+      padding: 0.8rem 1rem;
+      background: none;
+      color: var(--neon2);
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-size: 1.05rem;
+      outline: none;
+      transition: background 0.2s;
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(.77,0,.18,1);
+      background: rgba(0,255,231,0.04);
+      padding: 0 1rem;
+    }
+    .accordion.open .accordion-content {
+      max-height: 300px;
+      padding: 0.7rem 1rem 1rem 1rem;
+    }
+    .privacy-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-bottom: 1rem;
+    }
+    .privacy-radio {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 1.05rem;
+      color: var(--neon2);
+      font-weight: 600;
+    }
+    .privacy-radio input[type="radio"] {
+      accent-color: var(--neon2);
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+    .qr-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .qr-code {
+      background: #fff;
+      padding: 0.7rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 8px 2px var(--neon2);
+      margin-bottom: 0.3rem;
+    }
+    .copy-link-btn {
+      background: none;
+      border: 1.5px solid var(--neon2);
+      color: var(--neon2);
+      border-radius: 2rem;
+      padding: 0.4rem 1.2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 0.2rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .copy-link-btn.copied {
+      background: var(--neon2);
+      color: #fff;
+    }
+    .summary-card {
+      background: var(--glass-bg-light);
+      border-radius: 1.2rem;
+      padding: 1.2rem 1rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 0 8px 2px var(--neon2);
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+    .loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1.5rem 0;
+    }
+    .loader .dot {
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 50%;
+      background: var(--neon2);
+      margin: 0 0.3rem;
+      animation: bounce 0.8s infinite alternate;
+    }
+    .loader .dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .loader .dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    @keyframes bounce {
+      to {
+        transform: translateY(-12px) scale(1.1);
+        box-shadow: 0 0 18px 4px var(--neon2);
+      }
+    }
+    .success-anim {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 2rem 0 1rem 0;
+      animation: fadeIn 1s;
+    }
+    .success-check {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--neon2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 18px 4px var(--neon2);
+      animation: popIn 0.7s;
+    }
+    .success-check svg {
+      width: 40px;
+      height: 40px;
+      stroke: #fff;
+      stroke-width: 4px;
+      fill: none;
+      stroke-dasharray: 60;
+      stroke-dashoffset: 60;
+      animation: checkmark 0.7s 0.2s forwards;
+    }
+    @keyframes checkmark {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @media (max-width: 600px) {
+      .glass-card {
+        padding: 1.2rem 0.5rem 1rem 0.5rem;
+        min-height: 340px;
+      }
+      .wizard-container {
+        padding: 0.5rem 0 1rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wizard-container">
+    <div class="step-indicator" id="stepIndicator">
+      <div class="step-dot active" data-step="0">1</div>
+      <div class="step-dot" data-step="1">2</div>
+      <div class="step-dot" data-step="2">3</div>
+      <div class="step-dot" data-step="3">4</div>
+      <div class="step-dot" data-step="4">5</div>
+    </div>
+    <!-- Step 1: Party Basics -->
+    <section class="glass-card active" id="step-0">
+      <form class="wizard-form" id="form-step-0" autocomplete="off">
+        <label for="partyName">Party Name</label>
+        <input type="text" id="partyName" name="partyName" maxlength="40" required placeholder="e.g. Neon Nights" />
+        <label for="partyDateTime">Date & Time</label>
+        <input type="datetime-local" id="partyDateTime" name="partyDateTime" required />
+        <label for="partyLocation">Location</label>
+        <input type="text" id="partyLocation" name="partyLocation" required placeholder="Type or paste Google Maps link" />
+        <label for="partyCover">Party Cover Photo</label>
+        <input type="file" id="partyCover" name="partyCover" accept="image/*" />
+        <img id="coverPreview" class="cover-preview" alt="Cover Preview" />
+        <div class="wizard-btns">
+          <button type="button" class="wizard-btn active" id="next-0" disabled>Next</button>
+        </div>
+      </form>
+    </section>
+    <!-- Step 2: Vibe & Genre -->
+    <section class="glass-card" id="step-1">
+      <form class="wizard-form" id="form-step-1" autocomplete="off">
+        <label>Party Type</label>
+        <div class="tag-pills" id="partyTypeTags"></div>
+        <label>Music Genre</label>
+        <div class="tag-pills" id="musicGenreTags"></div>
+        <label>Dress Code / Theme <span style="color:var(--neon2);font-weight:400;font-size:0.9em;">(optional)</span></label>
+        <input type="text" id="dressCode" name="dressCode" maxlength="30" placeholder="e.g. Neon, 90s, Pajama" />
+        <div class="wizard-btns">
+          <button type="button" class="wizard-btn" id="back-1">Back</button>
+          <button type="button" class="wizard-btn" id="next-1" disabled>Next</button>
+        </div>
+      </form>
+    </section>
+    <!-- Step 3: Contribution & Tickets -->
+    <section class="glass-card" id="step-2">
+      <form class="wizard-form" id="form-step-2" autocomplete="off">
+        <div class="toggle-switch">
+          <input type="checkbox" id="allowContrib" name="allowContrib" />
+          <label for="allowContrib">Allow guests to contribute items?</label>
+        </div>
+        <div class="contrib-list" id="contribList" style="display:none;"></div>
+        <button type="button" class="add-item-btn" id="addContribItem" style="display:none;">+ Add Item</button>
+        <div class="accordion" id="ticketAccordion">
+          <button type="button" class="accordion-header" id="ticketAccordionHeader">Ticketing &rarr;</button>
+          <div class="accordion-content" id="ticketAccordionContent">
+            <label for="ticketPrice">Ticket Price</label>
+            <input type="number" id="ticketPrice" name="ticketPrice" min="0" step="0.01" placeholder="₹ or $" />
+            <label for="maxAttendees">Max Attendees</label>
+            <input type="number" id="maxAttendees" name="maxAttendees" min="1" max="999" placeholder="e.g. 50" />
+            <div class="toggle-switch">
+              <input type="checkbox" id="earlyBird" name="earlyBird" />
+              <label for="earlyBird">Early bird discount?</label>
+            </div>
+          </div>
+        </div>
+        <div class="wizard-btns">
+          <button type="button" class="wizard-btn" id="back-2">Back</button>
+          <button type="button" class="wizard-btn" id="next-2" disabled>Next</button>
+        </div>
+      </form>
+    </section>
+    <!-- Step 4: Privacy & Access -->
+    <section class="glass-card" id="step-3">
+      <form class="wizard-form" id="form-step-3" autocomplete="off">
+        <label>Privacy</label>
+        <div class="privacy-options">
+          <label class="privacy-radio"><input type="radio" name="privacy" value="public" checked /> Public <span style="font-weight:400;font-size:0.9em;">(visible on Explore)</span></label>
+          <label class="privacy-radio"><input type="radio" name="privacy" value="private" /> Private <span style="font-weight:400;font-size:0.9em;">(invite only)</span></label>
+          <label class="privacy-radio"><input type="radio" name="privacy" value="secret" /> Secret <span style="font-weight:400;font-size:0.9em;">(via link only)</span></label>
+        </div>
+        <div class="qr-section" id="qrSection" style="display:none;">
+          <div class="qr-code" id="qrCode"></div>
+          <button type="button" class="copy-link-btn" id="copyLinkBtn">Copy Invite Link</button>
+        </div>
+        <label for="hostContact">Host Contact Info <span style="color:var(--neon2);font-weight:400;font-size:0.9em;">(socials optional)</span></label>
+        <input type="text" id="hostContact" name="hostContact" maxlength="50" placeholder="e.g. @yourinsta, phone, email" />
+        <div class="wizard-btns">
+          <button type="button" class="wizard-btn" id="back-3">Back</button>
+          <button type="button" class="wizard-btn" id="next-3" disabled>Next</button>
+        </div>
+      </form>
+    </section>
+    <!-- Step 5: Review & Publish -->
+    <section class="glass-card" id="step-4">
+      <div class="summary-card" id="summaryCard"></div>
+      <div class="wizard-btns">
+        <button type="button" class="wizard-btn" id="back-4">Back</button>
+        <button type="button" class="wizard-btn active" id="publishBtn">Publish Party</button>
+      </div>
+      <div class="loader" id="publishLoader" style="display:none;">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+      <div class="success-anim" id="successAnim" style="display:none;">
+        <div class="success-check">
+          <svg viewBox="0 0 52 52"><path d="M14 27l8 8 16-16"/></svg>
+        </div>
+        <div style="color:var(--neon2);font-size:1.2rem;font-weight:700;">Party Published!</div>
+      </div>
+    </section>
+  </div>
+  <script>
+    // --- Step Data ---
+    const wizardData = {
+      partyName: '',
+      partyDateTime: '',
+      partyLocation: '',
+      partyCover: '', // base64
+      partyType: [],
+      musicGenre: [],
+      dressCode: '',
+      allowContrib: false,
+      contribItems: [],
+      ticketPrice: '',
+      maxAttendees: '',
+      earlyBird: false,
+      privacy: 'public',
+      hostContact: '',
+      inviteLink: '',
+    };
+    // --- Step Navigation ---
+    let currentStep = 0;
+    const totalSteps = 5;
+    const stepCards = Array.from(document.querySelectorAll('.glass-card'));
+    const stepDots = Array.from(document.querySelectorAll('.step-dot'));
+    function showStep(idx) {
+      stepCards.forEach((card, i) => {
+        card.classList.toggle('active', i === idx);
+      });
+      stepDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === idx);
+        dot.classList.toggle('completed', i < idx);
+      });
+      setTimeout(() => window.scrollTo({top:0,behavior:'smooth'}), 10);
+      currentStep = idx;
+    }
+    // --- Step 1: Party Basics ---
+    const partyName = document.getElementById('partyName');
+    const partyDateTime = document.getElementById('partyDateTime');
+    const partyLocation = document.getElementById('partyLocation');
+    const partyCover = document.getElementById('partyCover');
+    const coverPreview = document.getElementById('coverPreview');
+    const next0 = document.getElementById('next-0');
+    function validateStep0() {
+      const valid = partyName.value.trim() && partyDateTime.value && partyLocation.value.trim();
+      next0.disabled = !valid;
+      next0.classList.toggle('active', valid);
+      return valid;
+    }
+    [partyName, partyDateTime, partyLocation].forEach(input => {
+      input.addEventListener('input', validateStep0);
+    });
+    partyCover.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          coverPreview.src = ev.target.result;
+          coverPreview.style.display = 'block';
+          wizardData.partyCover = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        coverPreview.style.display = 'none';
+        coverPreview.src = '';
+        wizardData.partyCover = '';
+      }
+    });
+    next0.addEventListener('click', () => {
+      if (!validateStep0()) return;
+      wizardData.partyName = partyName.value.trim();
+      wizardData.partyDateTime = partyDateTime.value;
+      wizardData.partyLocation = partyLocation.value.trim();
+      showStep(1);
+    });
+    // --- Step 2: Vibe & Genre ---
+    const partyTypeTags = [
+      {label:'Chill', trending:true},
+      {label:'House', trending:false},
+      {label:'Rave', trending:true},
+      {label:'Jam', trending:false},
+      {label:'LAN', trending:true},
+      {label:'Pool', trending:false},
+    ];
+    const musicGenreTags = [
+      {label:'EDM', trending:true},
+      {label:'Hip Hop', trending:true},
+      {label:'Lo-fi', trending:false},
+      {label:'Techno', trending:true},
+      {label:'Pop', trending:false},
+      {label:'Rock', trending:false},
+      {label:'Indie', trending:false},
+      {label:'Trap', trending:false},
+    ];
+    function renderTagPills(container, tags, selectedArr) {
+      container.innerHTML = '';
+      tags.forEach(tag => {
+        const pill = document.createElement('div');
+        pill.className = 'tag-pill' + (tag.trending ? ' trending' : '');
+        pill.textContent = tag.label;
+        if (selectedArr.includes(tag.label)) pill.classList.add('selected');
+        pill.addEventListener('click', () => {
+          if (selectedArr.includes(tag.label)) {
+            selectedArr.splice(selectedArr.indexOf(tag.label), 1);
+          } else {
+            selectedArr.push(tag.label);
+          }
+          renderTagPills(container, tags, selectedArr);
+          validateStep1();
+        });
+        container.appendChild(pill);
+      });
+    }
+    const partyTypeArr = [];
+    const musicGenreArr = [];
+    const partyTypeTagsDiv = document.getElementById('partyTypeTags');
+    const musicGenreTagsDiv = document.getElementById('musicGenreTags');
+    renderTagPills(partyTypeTagsDiv, partyTypeTags, partyTypeArr);
+    renderTagPills(musicGenreTagsDiv, musicGenreTags, musicGenreArr);
+    const dressCode = document.getElementById('dressCode');
+    const next1 = document.getElementById('next-1');
+    const back1 = document.getElementById('back-1');
+    function validateStep1() {
+      const valid = partyTypeArr.length > 0 && musicGenreArr.length > 0;
+      next1.disabled = !valid;
+      next1.classList.toggle('active', valid);
+      return valid;
+    }
+    dressCode.addEventListener('input', validateStep1);
+    next1.addEventListener('click', () => {
+      if (!validateStep1()) return;
+      wizardData.partyType = [...partyTypeArr];
+      wizardData.musicGenre = [...musicGenreArr];
+      wizardData.dressCode = dressCode.value.trim();
+      showStep(2);
+    });
+    back1.addEventListener('click', () => showStep(0));
+    // --- Step 3: Contribution & Tickets ---
+    const allowContrib = document.getElementById('allowContrib');
+    const contribList = document.getElementById('contribList');
+    const addContribItem = document.getElementById('addContribItem');
+    const ticketAccordion = document.getElementById('ticketAccordion');
+    const ticketAccordionHeader = document.getElementById('ticketAccordionHeader');
+    const ticketAccordionContent = document.getElementById('ticketAccordionContent');
+    const ticketPrice = document.getElementById('ticketPrice');
+    const maxAttendees = document.getElementById('maxAttendees');
+    const earlyBird = document.getElementById('earlyBird');
+    const next2 = document.getElementById('next-2');
+    const back2 = document.getElementById('back-2');
+    let contribItemsArr = [];
+    allowContrib.addEventListener('change', () => {
+      const on = allowContrib.checked;
+      contribList.style.display = on ? 'block' : 'none';
+      addContribItem.style.display = on ? 'block' : 'none';
+      if (!on) contribItemsArr = [];
+      renderContribList();
+      validateStep2();
+    });
+    function renderContribList() {
+      contribList.innerHTML = '';
+      contribItemsArr.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'contrib-item';
+        div.innerHTML = `<input type="text" placeholder="Item name" value="${item.name}" maxlength="20" required />
+          <input type="number" min="1" max="99" value="${item.qty}" style="width:60px;" required />
+          <button type="button" class="remove-item">&times;</button>`;
+        const nameInput = div.querySelector('input[type="text"]');
+        const qtyInput = div.querySelector('input[type="number"]');
+        nameInput.addEventListener('input', e => {
+          contribItemsArr[idx].name = e.target.value;
+          validateStep2();
+        });
+        qtyInput.addEventListener('input', e => {
+          contribItemsArr[idx].qty = e.target.value;
+          validateStep2();
+        });
+        div.querySelector('.remove-item').addEventListener('click', () => {
+          contribItemsArr.splice(idx, 1);
+          renderContribList();
+          validateStep2();
+        });
+        contribList.appendChild(div);
+      });
+    }
+    addContribItem.addEventListener('click', () => {
+      contribItemsArr.push({name:'', qty:1});
+      renderContribList();
+      validateStep2();
+    });
+    ticketAccordionHeader.addEventListener('click', () => {
+      ticketAccordion.classList.toggle('open');
+    });
+    function validateStep2() {
+      let valid = true;
+      if (allowContrib.checked) {
+        valid = contribItemsArr.length > 0 && contribItemsArr.every(item => item.name.trim() && item.qty > 0);
+      }
+      if (ticketAccordion.classList.contains('open')) {
+        if (ticketPrice.value && ticketPrice.value < 0) valid = false;
+        if (maxAttendees.value && maxAttendees.value < 1) valid = false;
+      }
+      next2.disabled = !valid;
+      next2.classList.toggle('active', valid);
+      return valid;
+    }
+    [ticketPrice, maxAttendees, earlyBird].forEach(input => {
+      input.addEventListener('input', validateStep2);
+    });
+    next2.addEventListener('click', () => {
+      if (!validateStep2()) return;
+      wizardData.allowContrib = allowContrib.checked;
+      wizardData.contribItems = allowContrib.checked ? contribItemsArr.filter(item => item.name.trim()) : [];
+      wizardData.ticketPrice = ticketPrice.value;
+      wizardData.maxAttendees = maxAttendees.value;
+      wizardData.earlyBird = earlyBird.checked;
+      showStep(3);
+    });
+    back2.addEventListener('click', () => showStep(1));
+    // --- Step 4: Privacy & Access ---
+    const privacyRadios = Array.from(document.querySelectorAll('input[name="privacy"]'));
+    const qrSection = document.getElementById('qrSection');
+    const qrCode = document.getElementById('qrCode');
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    const hostContact = document.getElementById('hostContact');
+    const next3 = document.getElementById('next-3');
+    const back3 = document.getElementById('back-3');
+    function updatePrivacyUI() {
+      const val = privacyRadios.find(r => r.checked).value;
+      qrSection.style.display = (val === 'private' || val === 'secret') ? 'flex' : 'none';
+      if (val === 'private' || val === 'secret') {
+        // Generate invite link and QR
+        wizardData.inviteLink = `${window.location.origin}/join.html?party=${encodeURIComponent(wizardData.partyName.replace(/\s+/g,'-').toLowerCase())}`;
+        qrCode.innerHTML = '';
+        // Minimal QR: use Google Chart API for demo
+        const qrUrl = `https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl=${encodeURIComponent(wizardData.inviteLink)}`;
+        qrCode.innerHTML = `<img src="${qrUrl}" width="120" height="120" alt="QR Code" />`;
+      }
+    }
+    privacyRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        updatePrivacyUI();
+        validateStep3();
+      });
+    });
+    function validateStep3() {
+      const valid = hostContact.value.trim().length > 0;
+      next3.disabled = !valid;
+      next3.classList.toggle('active', valid);
+      return valid;
+    }
+    hostContact.addEventListener('input', validateStep3);
+    copyLinkBtn.addEventListener('click', () => {
+      if (!wizardData.inviteLink) return;
+      navigator.clipboard.writeText(wizardData.inviteLink).then(() => {
+        copyLinkBtn.classList.add('copied');
+        copyLinkBtn.textContent = 'Copied!';
+        setTimeout(() => {
+          copyLinkBtn.classList.remove('copied');
+          copyLinkBtn.textContent = 'Copy Invite Link';
+        }, 1200);
+      });
+    });
+    next3.addEventListener('click', () => {
+      if (!validateStep3()) return;
+      wizardData.privacy = privacyRadios.find(r => r.checked).value;
+      wizardData.hostContact = hostContact.value.trim();
+      updatePrivacyUI();
+      showStep(4);
+      renderSummary();
+    });
+    back3.addEventListener('click', () => showStep(2));
+    // --- Step 5: Review & Publish ---
+    const summaryCard = document.getElementById('summaryCard');
+    const back4 = document.getElementById('back-4');
+    const publishBtn = document.getElementById('publishBtn');
+    const publishLoader = document.getElementById('publishLoader');
+    const successAnim = document.getElementById('successAnim');
+    function renderSummary() {
+      summaryCard.innerHTML = `
+        <div style="font-size:1.2rem;font-weight:700;margin-bottom:0.5rem;">${wizardData.partyName}</div>
+        <div><b>Date & Time:</b> ${wizardData.partyDateTime.replace('T',' ')}</div>
+        <div><b>Location:</b> ${wizardData.partyLocation}</div>
+        ${wizardData.partyCover ? `<img src="${wizardData.partyCover}" style="width:100%;max-height:120px;object-fit:cover;border-radius:0.7rem;margin:0.5rem 0;" />` : ''}
+        <div><b>Type:</b> ${wizardData.partyType.join(', ')}</div>
+        <div><b>Music:</b> ${wizardData.musicGenre.join(', ')}</div>
+        ${wizardData.dressCode ? `<div><b>Theme:</b> ${wizardData.dressCode}</div>` : ''}
+        <div><b>Contributions:</b> ${wizardData.allowContrib ? wizardData.contribItems.map(i=>`${i.name} (x${i.qty})`).join(', ') : 'No'}</div>
+        <div><b>Tickets:</b> ${wizardData.ticketPrice ? (wizardData.ticketPrice + (wizardData.earlyBird ? ' (Early Bird)' : '')) : 'Free'}</div>
+        <div><b>Max Attendees:</b> ${wizardData.maxAttendees || 'Unlimited'}</div>
+        <div><b>Privacy:</b> ${wizardData.privacy.charAt(0).toUpperCase()+wizardData.privacy.slice(1)}</div>
+        <div><b>Host Contact:</b> ${wizardData.hostContact}</div>
+        ${wizardData.inviteLink ? `<div style="margin-top:0.5rem;"><b>Invite Link:</b> <a href="${wizardData.inviteLink}" target="_blank" style="color:var(--neon2);text-decoration:underline;">${wizardData.inviteLink}</a></div>` : ''}
+      `;
+    }
+    back4.addEventListener('click', () => showStep(3));
+    publishBtn.addEventListener('click', () => {
+      publishBtn.disabled = true;
+      publishLoader.style.display = 'flex';
+      setTimeout(() => {
+        publishLoader.style.display = 'none';
+        successAnim.style.display = 'flex';
+        setTimeout(() => {
+          // Redirect to Event Lobby (simulate)
+          window.location.href = 'lobby.html?party=' + encodeURIComponent(wizardData.partyName.replace(/\s+/g,'-').toLowerCase());
+        }, 1800);
+      }, 1800);
+    });
+    // --- Step Navigation Buttons ---
+    // Enable validation on step show
+    function onStepShow(idx) {
+      switch(idx) {
+        case 0: validateStep0(); break;
+        case 1: validateStep1(); break;
+        case 2: validateStep2(); break;
+        case 3: validateStep3(); updatePrivacyUI(); break;
+      }
+    }
+    stepCards.forEach((card, idx) => {
+      card.addEventListener('transitionend', () => {
+        if (card.classList.contains('active')) onStepShow(idx);
+      });
+    });
+    // On initial load
+    onStepShow(0);
+    // Auto-scroll to top on step change
+    function showStep(idx) {
+      stepCards.forEach((card, i) => {
+        card.classList.toggle('active', i === idx);
+      });
+      stepDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === idx);
+        dot.classList.toggle('completed', i < idx);
+      });
+      setTimeout(() => window.scrollTo({top:0,behavior:'smooth'}), 10);
+      currentStep = idx;
+      onStepShow(idx);
+    }
+  </script>
+</body>
+</html>

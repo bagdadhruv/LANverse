@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LANverse Social Stories</title>
+  <link rel="stylesheet" href="assets/css/lanverse.css">
+  <link rel="stylesheet" href="assets/css/social_stories.css">
+  
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#a259ff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LANverse">
+  <link rel="apple-touch-icon" href="assets/images/icon-192.png">
+  <meta name="msapplication-TileColor" content="#a259ff">
+  <meta name="msapplication-TileImage" content="assets/images/icon-144.png">
+  <meta name="description" content="Discover and join epic local parties with LANverse.">
+  <meta name="keywords" content="parties, events, local, social, LANverse">
+  <meta name="author" content="LANverse">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="LANverse">
+</head>
+<body>
+  <div class="social-stories-container">
+    <!-- Party Poster (edge-to-edge) -->
+    <div class="party-poster-outer">
+      <img src="" alt="Party Poster" class="party-poster" id="party-poster" />
+      <div class="party-poster-blur" id="party-poster-blur"></div>
+      <div class="party-avatar-info" id="party-avatar-info">
+        <a href="#" id="host-profile-link"><img src="" alt="Host Avatar" class="host-avatar" id="host-avatar" /></a>
+        <span class="event-tag" id="event-tag"></span>
+      </div>
+    </div>
+    <!-- Story Content -->
+    <div class="story-content-area">
+      <div class="story-carousel" id="story-carousel"></div>
+    </div>
+  </div>
+  <nav class="bottom-navbar">
+    <ul class="bottom-nav-list">
+      <li><a href="home.html"><span class="nav-icon">🏠</span></a></li>
+      <li><a href="my_events.html"><span class="nav-icon">🎫</span></a></li>
+      <li class="active"><a href="social.html"><span class="nav-icon">👥</span></a></li>
+      <li><a href="notifications.html"><span class="nav-icon">📥</span></a></li>
+      <li><a href="profile.html"><span class="nav-icon">🙎‍♂️</span></a></li>
+    </ul>
+  </nav>
+  <style>
+    .bottom-navbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      background: var(--black);
+      box-shadow: 0 -2px 16px 0 rgba(162,89,255,0.12);
+      z-index: 100;
+      border-top-left-radius: 1.2rem;
+      border-top-right-radius: 1.2rem;
+    }
+    .bottom-nav-list {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 0;
+      padding: 0.5em 0 0.2em 0;
+      list-style: none;
+    }
+    .bottom-nav-list li {
+      flex: 1;
+      text-align: center;
+    }
+    .bottom-nav-list a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 0.3em 0;
+      transition: color 0.2s;
+    }
+    .bottom-nav-list li.active a,
+    .bottom-nav-list a:hover {
+      color: var(--neon-pink);
+    }
+    .nav-icon {
+      font-size: 1.5em;
+      margin-bottom: 0.1em;
+    }
+    /* Enhanced active tab highlight */
+    .bottom-nav-list li.active a {
+      color: var(--neon-pink);
+      background: rgba(162, 89, 255, 0.18);
+      border-radius: 1.2em;
+      box-shadow: 0 0 12px var(--neon-pink), 0 0 4px var(--neon-purple);
+      position: relative;
+      z-index: 1;
+    }
+    .bottom-nav-list li.active .nav-icon {
+      transform: scale(1.2);
+      text-shadow: 0 0 12px var(--neon-pink), 0 0 4px var(--neon-purple);
+      transition: transform 0.2s, text-shadow 0.2s;
+    }
+  </style>
+  <script src="assets/js/social_stories_simple.js"></script>
+  <script src="assets/js/standalone-enforcer.js"></script>
+</body>
+</html>

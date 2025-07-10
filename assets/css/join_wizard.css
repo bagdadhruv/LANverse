@@ -1,0 +1,203 @@
+/* Join Party Wizard Styles - Host Wizard Match */
+
+body, html {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #181a2b 0%, #232946 100%);
+}
+
+.wizard-container {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem 0 2rem 0;
+  background: none;
+}
+
+.glass-card {
+  background: rgba(30, 30, 40, 0.55);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border-radius: 1.5rem;
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  border: 1.5px solid #7f5fff;
+  max-width: 420px;
+  width: 95vw;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  position: relative;
+  min-height: 420px;
+  display: none;
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  transition: opacity 0.5s cubic-bezier(.77,0,.18,1), transform 0.5s cubic-bezier(.77,0,.18,1);
+}
+.glass-card.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  z-index: 2;
+}
+
+.step-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 2rem;
+  user-select: none;
+}
+.step-dot {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background: #b0b0ff;
+  border: 2.5px solid #f857a6;
+  color: #f857a6;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 0 #f857a6;
+  transition: box-shadow 0.3s, background 0.3s, color 0.3s;
+  opacity: 0.7;
+}
+.step-dot.active {
+  background: #f857a6;
+  color: #fff;
+  box-shadow: 0 0 12px 2px #f857a6;
+  opacity: 1;
+}
+.step-dot.completed {
+  background: #7f5fff;
+  color: #222;
+  border-color: #7f5fff;
+  box-shadow: 0 0 8px 2px #7f5fff;
+  opacity: 1;
+}
+
+.wizard-btns {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.wizard-btn {
+  flex: 1 1 0;
+  padding: 0.9rem 0;
+  border-radius: 0.8rem;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #f857a6, #7f5fff);
+  color: #fff;
+  box-shadow: 0 0 12px 2px #f857a6;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s, opacity 0.3s;
+  opacity: 0.7;
+}
+.wizard-btn.active {
+  opacity: 1;
+  box-shadow: 0 0 18px 4px #7f5fff;
+}
+.wizard-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Join-specific styles (reuse from before) */
+.join-type-options {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.join-card {
+  background: rgba(255,255,255,0.2);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(127,95,255,0.08);
+  cursor: pointer;
+  transition: box-shadow 0.2s, border 0.2s;
+  border: 2px solid transparent;
+  min-width: 120px;
+  text-align: center;
+}
+.join-card.selected, .join-card:hover {
+  border: 2px solid #7f5fff;
+  box-shadow: 0 0 12px #7f5fff44;
+}
+.emoji {
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
+}
+.resource-list, .ticket-tiers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.resource-item, .ticket-tier {
+  background: rgba(255,255,255,0.18);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.quantity-btn {
+  background: #7f5fff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.quantity-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+textarea#vibeMessage {
+  width: 100%;
+  min-height: 70px;
+  border-radius: 10px;
+  border: 1.5px solid #7f5fff44;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.18);
+  color: inherit;
+  resize: vertical;
+}
+.summary-box {
+  background: rgba(255,255,255,0.18);
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 600px) {
+  .glass-card {
+    padding: 1.2rem 0.5rem 1rem 0.5rem;
+    min-height: 340px;
+  }
+  .wizard-container {
+    padding: 0.5rem 0 1rem 0;
+  }
+  .join-type-options {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+} 

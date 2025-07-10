@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LANverse – Find. Join. Party.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/lanverse.css">
+  
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#a259ff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LANverse">
+  <link rel="apple-touch-icon" href="assets/images/icon-192.png">
+  <meta name="msapplication-TileColor" content="#a259ff">
+  <meta name="msapplication-TileImage" content="assets/images/icon-144.png">
+  <meta name="description" content="Find. Join. Party. Discover and join epic local parties with LANverse.">
+  <meta name="keywords" content="parties, events, local, social, LANverse">
+  <meta name="author" content="LANverse">
+  <meta property="og:title" content="LANverse – Find. Join. Party.">
+  <meta property="og:description" content="Discover and join epic local parties with LANverse.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lanverse.app">
+  <meta property="og:image" content="assets/images/icon-512.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LANverse – Find. Join. Party.">
+  <meta name="twitter:description" content="Discover and join epic local parties with LANverse.">
+  <meta name="twitter:image" content="assets/images/icon-512.png">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="logo">LANverse</div>
+      <input type="checkbox" id="menu-toggle" class="menu-toggle" />
+      <label for="menu-toggle" class="burger">
+        <span></span><span></span><span></span>
+      </label>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="auth.html" class="cta-btn secondary" id="loginSignupBtn">Login / Signup</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="container hero-content">
+      <h1>Find. Join. Party. <span class="emoji">🔥</span></h1>
+      <p>LANverse helps you discover and join epic local parties. Skip the boring. Tap into the vibe.</p>
+      <div class="hero-buttons" id="heroButtons">
+        <button id="download-pwa-btn" class="cta-btn">Download PWA</button>
+        <button id="pwa-install-btn" class="pwa-install-btn" style="display: none;">
+          <span class="install-icon">📱</span>
+          <span class="install-text">Install LANverse</span>
+        </button>
+        <div id="install-guide" class="install-guide" style="display: none;">
+          <div class="guide-content">
+            <h3>📱 Install LANverse PWA</h3>
+            <div class="guide-steps">
+              <div class="step">
+                <span class="step-number">1</span>
+                <span>Look for the install icon in your browser's address bar</span>
+              </div>
+              <div class="step">
+                <span class="step-number">2</span>
+                <span>Click the install button or use your browser's menu</span>
+              </div>
+              <div class="step">
+                <span class="step-number">3</span>
+                <span>Choose "Install" or "Add to desktop"</span>
+              </div>
+            </div>
+            <div class="browser-specific">
+              <div class="browser-chrome">
+                <strong>Chrome/Edge:</strong> Look for 📱 icon in address bar
+              </div>
+              <div class="browser-firefox">
+                <strong>Firefox:</strong> Click ⋮ menu → "Install LANverse"
+              </div>
+              <div class="browser-safari">
+                <strong>Safari:</strong> Click Share → "Add to Home Screen"
+              </div>
+            </div>
+            <button class="guide-close-btn" onclick="hideInstallGuide()">Got it!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us Section -->
+  <section class="about-us" id="about">
+    <div class="container">
+      <h2>About Us</h2>
+      <p class="about-desc">LANverse is built by a crew of party-lovers, gamers, and creators who believe in making every night unforgettable. We're on a mission to connect Gen Z with the best local events, powered by community and creativity.</p>
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="avatar" style="background-image:url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
+          <div class="member-info">
+            <h3>Alex Kim</h3>
+            <p>Co-Founder & Product</p>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="avatar" style="background-image:url('https://randomuser.me/api/portraits/women/44.jpg');"></div>
+          <div class="member-info">
+            <h3>Jules Rivera</h3>
+            <p>Design & Community</p>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="avatar" style="background-image:url('https://randomuser.me/api/portraits/men/65.jpg');"></div>
+          <div class="member-info">
+            <h3>Dev Patel</h3>
+            <p>Engineering</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2>How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="icon">📍</div>
+          <h3>Find events nearby</h3>
+        </div>
+        <div class="step">
+          <div class="icon">🎟️</div>
+          <h3>Join by contributing or buying tickets</h3>
+        </div>
+        <div class="step">
+          <div class="icon">🕺</div>
+          <h3>Party with your crew</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trending Events -->
+  <section class="trending-events" id="events">
+    <div class="container">
+      <h2>Trending Events</h2>
+      <div class="events-grid">
+        <div class="event-card">
+          <div class="event-img"></div>
+          <div class="event-info">
+            <h3>Neon Nights</h3>
+            <p class="location">Downtown Loft</p>
+            <p class="date">Sat, July 20</p>
+            <a href="#" class="join-btn">Join Now</a>
+          </div>
+        </div>
+        <div class="event-card">
+          <div class="event-img"></div>
+          <div class="event-info">
+            <h3>Pixel Party</h3>
+            <p class="location">Rooftop Bar</p>
+            <p class="date">Fri, Aug 2</p>
+            <a href="#" class="join-btn">Join Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resource Pool Highlight -->
+  <section class="resource-pool">
+    <div class="container">
+      <h2>Your Ticket Isn't Just Cash <span class="emoji">💸</span></h2>
+      <p>Join events by contributing what's needed — speakers, lights, drinks. Be part of the vibe.</p>
+      <div class="contrib-grid">
+        <div class="contrib-item"><span>🔊</span><span>Speakers</span></div>
+        <div class="contrib-item"><span>💡</span><span>Lights</span></div>
+        <div class="contrib-item"><span>🍹</span><span>Drinks</span></div>
+        <div class="contrib-item"><span>🎮</span><span>Games</span></div>
+        <div class="contrib-item"><span>🍕</span><span>Snacks</span></div>
+        <div class="contrib-item"><span>📸</span><span>Photos</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call-To-Action -->
+  <section class="cta-section">
+    <div class="container cta-content">
+      <h2>Join. Contribute. Celebrate.</h2>
+      <div class="cta-buttons">
+        <a href="auth.html" class="cta-btn browser-register-btn">Register for Browser</a>
+        <button id="cta-pwa-install-btn" class="cta-btn pwa-install-cta-btn" style="display: none;">
+          📱 Install LANverse PWA
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="container contact-container">
+      <h2>Contact</h2>
+      <p class="contact-desc">Want to partner, host, or just say hi? Drop us a message or connect on socials!</p>
+      <form class="contact-form" autocomplete="off">
+        <div class="form-group">
+          <input type="text" name="name" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <input type="email" name="email" placeholder="Your Email" required>
+        </div>
+        <div class="form-group">
+          <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="cta-btn">Send Message</button>
+      </form>
+      <div class="contact-info">
+        <div class="contact-email"><span>📧</span> team@lanverse.app</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-logo">LANverse</div>
+      <ul class="footer-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram">&#x1F4F7;</a>
+        <a href="#" aria-label="TikTok">&#x1F3A4;</a>
+        <a href="#" aria-label="Discord">&#x1F47E;</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <small>&copy; 2024 LANverse. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <style>
+    /* Install Guide Styles */
+    .install-guide {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 2rem;
+    }
+    
+    .guide-content {
+      background: rgba(26, 26, 46, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(162, 89, 255, 0.3);
+      border-radius: 1rem;
+      padding: 2rem;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+    
+    .guide-content h3 {
+      color: var(--neon-pink);
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    
+    .guide-steps {
+      margin: 1.5rem 0;
+    }
+    
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 0;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0.75rem;
+      text-align: left;
+    }
+    
+    .step-number {
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+      color: white;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    
+    .browser-specific {
+      margin: 1.5rem 0;
+      text-align: left;
+    }
+    
+    .browser-specific > div {
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0.5rem;
+      border-left: 3px solid var(--neon-purple);
+    }
+    
+    .guide-close-btn {
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+      color: white;
+      border: none;
+      border-radius: 0.75rem;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .guide-close-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(162, 89, 255, 0.4);
+    }
+    
+    @media (max-width: 600px) {
+      .guide-content {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+      
+      .step {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+  
+  <script src="assets/js/pwa-install.js"></script>
+  <script>
+    // Clear any cached navbar buttons and ensure correct layout
+    function clearOldButtons() {
+      // Remove any old navbar buttons
+      const navLinks = document.querySelector('.nav-links');
+      if (navLinks) {
+        const oldButtons = navLinks.querySelectorAll('button, .auth-button');
+        oldButtons.forEach(btn => btn.remove());
+      }
+      
+      // Ensure hero buttons are in the right place
+      const heroButtons = document.getElementById('heroButtons');
+      if (!heroButtons) {
+        const heroContent = document.querySelector('.hero-content');
+        if (heroContent) {
+          const newHeroButtons = document.createElement('div');
+          newHeroButtons.className = 'hero-buttons';
+          newHeroButtons.id = 'heroButtons';
+          newHeroButtons.innerHTML = `
+            <button id="download-pwa-btn" class="cta-btn">Download PWA</button>
+          `;
+          heroContent.appendChild(newHeroButtons);
+        }
+      }
+    }
+    
+    // Show install guide
+    function showInstallGuide() {
+      const installGuide = document.getElementById('install-guide');
+      if (installGuide) {
+        installGuide.style.display = 'flex';
+      }
+    }
+    
+    // Hide install guide
+    function hideInstallGuide() {
+      const installGuide = document.getElementById('install-guide');
+      if (installGuide) {
+        installGuide.style.display = 'none';
+      }
+    }
+    
+    // Handle download PWA button click
+    function handleDownloadPWAClick() {
+      const downloadBtn = document.getElementById('download-pwa-btn');
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          console.log('Download PWA button clicked!');
+          
+          // Check if PWA can be installed
+          if (window.lanversePWA && window.lanversePWA.installApp) {
+            // If install prompt is available, trigger it
+            window.lanversePWA.installApp();
+          } else {
+            // Show installation guide
+            showInstallGuide();
+          }
+        });
+      }
+    }
+    
+    // Handle browser user registration (separate from PWA installation)
+    function handleBrowserRegistration() {
+      const registerBtn = document.querySelector('.browser-register-btn');
+      if (registerBtn) {
+        registerBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          console.log('Browser user registration clicked!');
+          window.location.href = 'auth.html';
+        });
+      }
+    }
+    
+    // Ensure the login/signup button stays visible
+    function ensureButtonVisible() {
+      const loginBtn = document.getElementById('loginSignupBtn');
+      const heroButtons = document.getElementById('heroButtons');
+      
+      if (loginBtn) {
+        loginBtn.style.display = 'inline-block !important';
+        loginBtn.style.visibility = 'visible !important';
+        loginBtn.style.opacity = '1 !important';
+        loginBtn.style.position = 'static !important';
+        loginBtn.style.zIndex = '999 !important';
+      }
+      
+      if (heroButtons) {
+        heroButtons.style.display = 'flex !important';
+        heroButtons.style.visibility = 'visible !important';
+        heroButtons.style.opacity = '1 !important';
+      }
+    }
+    
+    // Run on DOM content loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded - clearing old buttons and ensuring visibility');
+      clearOldButtons();
+      ensureButtonVisible();
+      handleDownloadPWAClick();
+      handleBrowserRegistration();
+      
+      // Add click handler
+      const loginBtn = document.getElementById('loginSignupBtn');
+      if (loginBtn) {
+        loginBtn.addEventListener('click', function(e) {
+          console.log('Login/Signup button clicked!');
+          e.preventDefault();
+          window.location.href = 'auth.html';
+        });
+      }
+    });
+    
+    // Run multiple times to catch any late hiding
+    setTimeout(() => { clearOldButtons(); ensureButtonVisible(); }, 100);
+    setTimeout(() => { clearOldButtons(); ensureButtonVisible(); }, 500);
+    setTimeout(() => { clearOldButtons(); ensureButtonVisible(); }, 1000);
+    setTimeout(() => { clearOldButtons(); ensureButtonVisible(); }, 2000);
+    
+    // Use MutationObserver to watch for changes
+    document.addEventListener('DOMContentLoaded', function() {
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'childList' || (mutation.type === 'attributes' && mutation.attributeName === 'style')) {
+            const loginBtn = document.getElementById('loginSignupBtn');
+            if (loginBtn && (loginBtn.style.display === 'none' || loginBtn.style.visibility === 'hidden')) {
+              console.log('Button was hidden, restoring visibility');
+              ensureButtonVisible();
+            }
+          }
+        });
+      });
+      
+      const loginBtn = document.getElementById('loginSignupBtn');
+      if (loginBtn) {
+        observer.observe(loginBtn, { attributes: true, attributeFilter: ['style'] });
+      }
+      
+      // Also observe the navbar for any new buttons being added
+      const navLinks = document.querySelector('.nav-links');
+      if (navLinks) {
+        observer.observe(navLinks, { childList: true, subtree: true });
+      }
+    });
+  </script>
+</body>
+</html>
