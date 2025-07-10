@@ -306,41 +306,58 @@
   <script src="assets/js/standalone-enforcer.js"></script>
   
   <script>
-    // Check authentication status
-    function checkAuth() {
-      const user = localStorage.getItem('lanverse_user');
-      if (!user) {
+    // Check authentication status using JWT and backend
+    async function checkAuth() {
+      const token = localStorage.getItem('lanverse_token');
+      if (!token) {
         window.location.href = 'auth.html';
+        return null;
       }
-      return JSON.parse(user);
+      
+      try {
+        const res = await fetch('/api/profile', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) {
+          localStorage.removeItem('lanverse_token');
+          window.location.href = 'auth.html';
+          return null;
+        }
+        return await res.json();
+      } catch (error) {
+        localStorage.removeItem('lanverse_token');
+        window.location.href = 'auth.html';
+        return null;
+      }
     }
 
     // Logout function
     function logout() {
-      localStorage.removeItem('lanverse_user');
+      localStorage.removeItem('lanverse_token');
       window.location.href = 'auth.html';
     }
 
     // Add account function
     function addAccount() {
       // Clear current user and redirect to auth
-      localStorage.removeItem('lanverse_user');
+      localStorage.removeItem('lanverse_token');
       window.location.href = 'auth.html';
     }
 
     // Load user data
-    function loadUserData() {
-      const user = checkAuth();
+    async function loadUserData() {
+      const user = await checkAuth();
       if (user) {
-        // Update profile with user data
+        // Update profile with user data from backend
         const userName = document.querySelector('.user-name');
         const userUsername = document.querySelector('.user-username');
         const userAvatar = document.getElementById('userAvatar');
         
-        if (userName) userName.textContent = user.name;
+        if (userName) userName.textContent = user.username || 'User';
         if (userUsername) userUsername.textContent = `@${user.username}`;
-        if (userAvatar && user.avatar) {
-          userAvatar.style.backgroundImage = `url(${user.avatar})`;
+        if (userAvatar) {
+          // Use a default avatar if none exists
+          userAvatar.style.backgroundImage = `url(https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 99)}.jpg)`;
           userAvatar.innerHTML = '';
         }
       }
@@ -358,20 +375,21 @@
         <h4 style="margin: 1rem 0 0.5rem 0; color: var(--neon-pink);">Account</h4>
         <div class="setting-item">
           <span>Add Another Account</span>
-          <button class="setting-btn" onclick="addAccount()">Switch</button>
+          <button class="setting-btn" onclick="addAccount()">Add</button>
         </div>
         <div class="setting-item">
           <span>Logout</span>
-          <button class="setting-btn logout-btn" onclick="logout()">Logout</button>
+          <button class="setting-btn" onclick="logout()">Logout</button>
         </div>
       `;
       
-      modalBody.appendChild(accountSection);
+      // Insert at the beginning of modal body
+      modalBody.insertBefore(accountSection, modalBody.firstChild);
     }
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      loadUserData();
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', async function() {
+      await loadUserData();
       setupAccountManagement();
     });
   </script>

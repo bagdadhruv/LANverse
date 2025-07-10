@@ -454,9 +454,10 @@
 
     // Check if user is already logged in
     function checkAuthStatus() {
-      const user = localStorage.getItem('lanverse_user');
-      if (user) {
-        currentUser = JSON.parse(user);
+      const token = localStorage.getItem('lanverse_token');
+      if (token) {
+        // For now, we'll just redirect if token exists.
+        // In a real app, you'd decode the token to get user info.
         window.location.href = 'home.html';
       }
     }
@@ -546,10 +547,10 @@
       event.preventDefault();
       clearMessages();
 
-      const email = document.getElementById('loginEmail').value;
+      const username = document.getElementById('loginEmail')?.value; // Use email for username
       const password = document.getElementById('loginPassword').value;
 
-      if (!email || !password) {
+      if (!username || !password) {
         showError('login', 'Please fill in all fields');
         return;
       }
@@ -557,23 +558,20 @@
       setLoading('loginBtn', true);
 
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        // Check if user exists in localStorage (demo purposes)
-        const users = JSON.parse(localStorage.getItem('lanverse_users') || '[]');
-        const user = users.find(u => u.email === email && u.password === password);
-
-        if (user) {
-          // Store current user
-          localStorage.setItem('lanverse_user', JSON.stringify(user));
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (res.ok && data.token) {
+          localStorage.setItem('lanverse_token', data.token);
           showSuccess('login', 'Login successful! Redirecting...');
-          
           setTimeout(() => {
             window.location.href = 'home.html';
           }, 1000);
         } else {
-          showError('login', 'Invalid email or password');
+          showError('login', data.error || 'Login failed');
         }
       } catch (error) {
         showError('login', 'Login failed. Please try again.');
@@ -587,13 +585,11 @@
       event.preventDefault();
       clearMessages();
 
-      const name = document.getElementById('signupName').value;
       const username = document.getElementById('signupUsername').value;
-      const email = document.getElementById('signupEmail').value;
       const password = document.getElementById('signupPassword').value;
       const confirmPassword = document.getElementById('signupConfirmPassword').value;
 
-      if (!name || !username || !email || !password || !confirmPassword) {
+      if (!username || !password || !confirmPassword) {
         showError('signup', 'Please fill in all fields');
         return;
       }
@@ -611,38 +607,20 @@
       setLoading('signupBtn', true);
 
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        // Check if user already exists
-        const users = JSON.parse(localStorage.getItem('lanverse_users') || '[]');
-        const existingUser = users.find(u => u.email === email || u.username === username);
-
-        if (existingUser) {
-          showError('signup', 'User already exists with this email or username');
-          return;
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showSuccess('signup', 'Account created! Please log in.');
+          setTimeout(() => {
+            toggleAuthMode(); // Switch to login form
+          }, 1000);
+        } else {
+          showError('signup', data.error || 'Signup failed');
         }
-
-        // Create new user
-        const newUser = {
-          id: Date.now().toString(),
-          name,
-          username,
-          email,
-          password,
-          avatar: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 99)}.jpg`,
-          createdAt: new Date().toISOString()
-        };
-
-        users.push(newUser);
-        localStorage.setItem('lanverse_users', JSON.stringify(users));
-        localStorage.setItem('lanverse_user', JSON.stringify(newUser));
-
-        showSuccess('signup', 'Account created successfully! Redirecting...');
-        
-        setTimeout(() => {
-          window.location.href = 'home.html';
-        }, 1000);
       } catch (error) {
         showError('signup', 'Signup failed. Please try again.');
       } finally {
