@@ -36,9 +36,33 @@
   </nav>
   <script src="assets/js/my_events_slide.js"></script>
   <script>
-    // Example: If viewing a friend's events, set the title dynamically
-    // let friendName = 'Alex';
-    // document.getElementById('myEventsSlideTitle').textContent = friendName + "'s Events";
+    // Check authentication status using JWT and backend
+    async function checkAuth() {
+      const token = localStorage.getItem('lanverse_token');
+      if (!token) {
+        window.location.href = 'auth.html';
+        return null;
+      }
+      
+      try {
+        const res = await fetch('/api/profile', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) {
+          localStorage.removeItem('lanverse_token');
+          window.location.href = 'auth.html';
+          return null;
+        }
+        return await res.json();
+      } catch (error) {
+        localStorage.removeItem('lanverse_token');
+        window.location.href = 'auth.html';
+        return null;
+      }
+    }
+    
+    // Initialize auth check
+    checkAuth();
   </script>
   <style>
     .search-bar {

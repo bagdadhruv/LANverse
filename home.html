@@ -332,117 +332,144 @@
     }
   </style>
   <script>
-    // Check authentication status
-function checkAuth() {
-  const user = localStorage.getItem('lanverse_user');
-  if (!user) {
-    // Check if this is an installed PWA
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-    
-    if (isStandalone) {
-      // For installed PWA, redirect to auth
-      window.location.href = 'auth.html';
-    } else {
-      // For browser users, redirect to landing page
-      window.location.href = 'index.html';
+    // Check authentication status using JWT and backend
+    async function checkAuth() {
+      const token = localStorage.getItem('lanverse_token');
+      if (!token) {
+        // Check if this is an installed PWA
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+        
+        if (isStandalone) {
+          // For installed PWA, redirect to auth
+          window.location.href = 'auth.html';
+        } else {
+          // For browser users, redirect to landing page
+          window.location.href = 'index.html';
+        }
+        return null;
+      }
+      
+      try {
+        const res = await fetch('/api/profile', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) {
+          localStorage.removeItem('lanverse_token');
+          const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+          if (isStandalone) {
+            window.location.href = 'auth.html';
+          } else {
+            window.location.href = 'index.html';
+          }
+          return null;
+        }
+        return await res.json();
+      } catch (error) {
+        localStorage.removeItem('lanverse_token');
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+        if (isStandalone) {
+          window.location.href = 'auth.html';
+        } else {
+          window.location.href = 'index.html';
+        }
+        return null;
+      }
     }
-  }
-}
 
-// Logout function
-function logout() {
-  localStorage.removeItem('lanverse_user');
-  window.location.href = 'auth.html';
-}
+    // Logout function
+    function logout() {
+      localStorage.removeItem('lanverse_token');
+      window.location.href = 'auth.html';
+    }
 
-// Demo event data map for use by events.html
-window.lanverseDemoEvents = {
-  "lan-chill": {
-    title: "LAN & Chill",
-    date: "2024-06-21T19:00:00",
-    location: "Central Park",
-    bannerImg: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    host: { name: "DJ Neon", avatar: "https://randomuser.me/api/portraits/men/32.jpg", bio: "Spinning the best of EDM & Lo-fi. 5+ years of party magic." },
-    badges: ["🔥 Trending"],
-    tags: ["Chill", "EDM", "Casual"],
-    resourcePool: ["2x Cold Drinks", "1x Speaker"],
-    contributionEnabled: false,
-    tickets: { required: true, price: 199, seatsLeft: 8 },
-    attendees: ["https://randomuser.me/api/portraits/women/44.jpg", "https://randomuser.me/api/portraits/men/45.jpg"],
-    moreAttendees: 3,
-    announcement: { text: "Bring your own snacks!", time: "Last updated: 1 hour ago" },
-    joined: false,
-    eventPast: false
-  },
-  "board-game-bash": {
-    title: "Board Game Bash",
-    date: "2024-06-21T20:00:00",
-    location: "Cafe 404",
-    bannerImg: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80",
-    host: { name: "Alex Kim", avatar: "https://randomuser.me/api/portraits/men/65.jpg", bio: "Board game enthusiast. Loves Catan and Uno." },
-    badges: ["🎲 Game Night"],
-    tags: ["Board Games", "Chill"],
-    resourcePool: ["Board Games", "Snacks"],
-    contributionEnabled: true,
-    tickets: { required: false, price: 0, seatsLeft: 20 },
-    attendees: ["https://randomuser.me/api/portraits/women/46.jpg"],
-    moreAttendees: 1,
-    announcement: { text: "Vote for your favorite game!", time: "Last updated: 3 hours ago" },
-    joined: false,
-    eventPast: false
-  },
-  "poolside-beats": {
-    title: "Poolside Beats",
-    date: "2024-06-22T17:00:00",
-    location: "Skyline Pool",
-    bannerImg: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80",
-    host: { name: "DJ Aqua", avatar: "https://randomuser.me/api/portraits/men/47.jpg", bio: "Pool party specialist. EDM & House." },
-    badges: ["💦 Pool Party"],
-    tags: ["Pool", "EDM", "Swimwear"],
-    resourcePool: ["Towels", "Drinks"],
-    contributionEnabled: true,
-    tickets: { required: true, price: 299, seatsLeft: 5 },
-    attendees: [],
-    moreAttendees: 0,
-    announcement: { text: "Don’t forget your swimsuit!", time: "Last updated: 30 min ago" },
-    joined: false,
-    eventPast: false
-  },
-  "retro-lan": {
-    title: "Retro LAN",
-    date: "2024-06-27T18:00:00",
-    location: "Pixel House",
-    bannerImg: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
-    host: { name: "Jules Rivera", avatar: "https://randomuser.me/api/portraits/women/44.jpg", bio: "Retro gamer. LAN party OG." },
-    badges: ["🕹️ Retro"],
-    tags: ["LAN", "Retro", "Games"],
-    resourcePool: ["Ethernet Cables", "Old PCs"],
-    contributionEnabled: false,
-    tickets: { required: false, price: 0, seatsLeft: 12 },
-    attendees: [],
-    moreAttendees: 0,
-    announcement: { text: "BYO hardware!", time: "Last updated: 2 days ago" },
-    joined: false,
-    eventPast: false
-  },
-  "silent-disco": {
-    title: "Silent Disco",
-    date: "2024-06-28T21:00:00",
-    location: "Rooftop",
-    bannerImg: "https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=800&q=80",
-    host: { name: "Dev Patel", avatar: "https://randomuser.me/api/portraits/men/65.jpg", bio: "Silent party pioneer. Headphones provided!" },
-    badges: ["🎧 Silent"],
-    tags: ["Disco", "Silent", "Night"],
-    resourcePool: ["Headphones"],
-    contributionEnabled: false,
-    tickets: { required: true, price: 249, seatsLeft: 10 },
-    attendees: [],
-    moreAttendees: 0,
-    announcement: { text: "Arrive early for best headphones!", time: "Last updated: 5 hours ago" },
-    joined: false,
-    eventPast: false
-  }
-};
+    // Demo event data map for use by events.html
+    window.lanverseDemoEvents = {
+      "lan-chill": {
+        title: "LAN & Chill",
+        date: "2024-06-21T19:00:00",
+        location: "Central Park",
+        bannerImg: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+        host: { name: "DJ Neon", avatar: "https://randomuser.me/api/portraits/men/32.jpg", bio: "Spinning the best of EDM & Lo-fi. 5+ years of party magic." },
+        badges: ["🔥 Trending"],
+        tags: ["Chill", "EDM", "Casual"],
+        resourcePool: ["2x Cold Drinks", "1x Speaker"],
+        contributionEnabled: false,
+        tickets: { required: true, price: 199, seatsLeft: 8 },
+        attendees: ["https://randomuser.me/api/portraits/women/44.jpg", "https://randomuser.me/api/portraits/men/45.jpg"],
+        moreAttendees: 3,
+        announcement: { text: "Bring your own snacks!", time: "Last updated: 1 hour ago" },
+        joined: false,
+        eventPast: false
+      },
+      "board-game-bash": {
+        title: "Board Game Bash",
+        date: "2024-06-21T20:00:00",
+        location: "Cafe 404",
+        bannerImg: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80",
+        host: { name: "Alex Kim", avatar: "https://randomuser.me/api/portraits/men/65.jpg", bio: "Board game enthusiast. Loves Catan and Uno." },
+        badges: ["🎲 Game Night"],
+        tags: ["Board Games", "Chill"],
+        resourcePool: ["Board Games", "Snacks"],
+        contributionEnabled: true,
+        tickets: { required: false, price: 0, seatsLeft: 20 },
+        attendees: ["https://randomuser.me/api/portraits/women/46.jpg"],
+        moreAttendees: 1,
+        announcement: { text: "Vote for your favorite game!", time: "Last updated: 3 hours ago" },
+        joined: false,
+        eventPast: false
+      },
+      "poolside-beats": {
+        title: "Poolside Beats",
+        date: "2024-06-22T17:00:00",
+        location: "Skyline Pool",
+        bannerImg: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80",
+        host: { name: "DJ Aqua", avatar: "https://randomuser.me/api/portraits/men/47.jpg", bio: "Pool party specialist. EDM & House." },
+        badges: ["💦 Pool Party"],
+        tags: ["Pool", "EDM", "Swimwear"],
+        resourcePool: ["Towels", "Drinks"],
+        contributionEnabled: true,
+        tickets: { required: true, price: 299, seatsLeft: 5 },
+        attendees: [],
+        moreAttendees: 0,
+        announcement: { text: "Don’t forget your swimsuit!", time: "Last updated: 30 min ago" },
+        joined: false,
+        eventPast: false
+      },
+      "retro-lan": {
+        title: "Retro LAN",
+        date: "2024-06-27T18:00:00",
+        location: "Pixel House",
+        bannerImg: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
+        host: { name: "Jules Rivera", avatar: "https://randomuser.me/api/portraits/women/44.jpg", bio: "Retro gamer. LAN party OG." },
+        badges: ["🕹️ Retro"],
+        tags: ["LAN", "Retro", "Games"],
+        resourcePool: ["Ethernet Cables", "Old PCs"],
+        contributionEnabled: false,
+        tickets: { required: false, price: 0, seatsLeft: 12 },
+        attendees: [],
+        moreAttendees: 0,
+        announcement: { text: "BYO hardware!", time: "Last updated: 2 days ago" },
+        joined: false,
+        eventPast: false
+      },
+      "silent-disco": {
+        title: "Silent Disco",
+        date: "2024-06-28T21:00:00",
+        location: "Rooftop",
+        bannerImg: "https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=800&q=80",
+        host: { name: "Dev Patel", avatar: "https://randomuser.me/api/portraits/men/65.jpg", bio: "Silent party pioneer. Headphones provided!" },
+        badges: ["🎧 Silent"],
+        tags: ["Disco", "Silent", "Night"],
+        resourcePool: ["Headphones"],
+        contributionEnabled: false,
+        tickets: { required: true, price: 249, seatsLeft: 10 },
+        attendees: [],
+        moreAttendees: 0,
+        announcement: { text: "Arrive early for best headphones!", time: "Last updated: 5 hours ago" },
+        joined: false,
+        eventPast: false
+      }
+    };
     };
 
     // Check auth on page load

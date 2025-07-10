@@ -542,6 +542,34 @@
         }
       });
     });
+
+    // Check authentication status using JWT and backend
+    async function checkAuth() {
+      const token = localStorage.getItem('lanverse_token');
+      if (!token) {
+        window.location.href = 'auth.html';
+        return null;
+      }
+      
+      try {
+        const res = await fetch('/api/profile', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) {
+          localStorage.removeItem('lanverse_token');
+          window.location.href = 'auth.html';
+          return null;
+        }
+        return await res.json();
+      } catch (error) {
+        localStorage.removeItem('lanverse_token');
+        window.location.href = 'auth.html';
+        return null;
+      }
+    }
+    
+    // Initialize auth check
+    checkAuth();
   </script>
   <script src="assets/js/standalone-enforcer.js"></script>
 </body>
