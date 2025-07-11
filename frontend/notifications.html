@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LANverse – Notifications</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/lanverse.css">
+  
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#a259ff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LANverse">
+  <link rel="apple-touch-icon" href="assets/images/icon-192.png">
+  <meta name="msapplication-TileColor" content="#a259ff">
+  <meta name="msapplication-TileImage" content="assets/images/icon-144.png">
+  <meta name="description" content="Discover and join epic local parties with LANverse.">
+  <meta name="keywords" content="parties, events, local, social, LANverse">
+  <meta name="author" content="LANverse">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="LANverse">
+  
+  <style>
+    /* Notifications specific styles */
+    .notifications-container {
+      padding: 1rem;
+      padding-bottom: 6rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .notifications-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .notifications-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--neon-pink);
+      margin: 0;
+    }
+
+    .notifications-count {
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+      color: var(--white);
+      padding: 0.3rem 0.8rem;
+      border-radius: 1rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .filter-tab {
+      background: var(--gray);
+      border: 2px solid transparent;
+      color: var(--white);
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .filter-tab.active {
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 12px var(--neon-pink);
+    }
+
+    .filter-tab:hover {
+      border-color: var(--neon-purple);
+      box-shadow: 0 0 8px var(--neon-purple);
+    }
+
+    .notification-item {
+      background: var(--gray);
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .notification-item:hover {
+      border-color: var(--neon-purple);
+      box-shadow: 0 0 16px rgba(162, 89, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .notification-item.unread {
+      border-color: var(--neon-pink);
+      background: linear-gradient(135deg, rgba(255, 20, 147, 0.1), rgba(162, 89, 255, 0.1));
+    }
+
+    .notification-item.unread::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+    }
+
+    .notification-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .notification-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .notification-content {
+      flex: 1;
+    }
+
+    .notification-title {
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.2rem;
+      font-size: 1rem;
+    }
+
+    .notification-message {
+      color: var(--light-gray);
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+    }
+
+    .notification-time {
+      color: var(--neon-purple);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .notification-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.8rem;
+    }
+
+    .action-btn {
+      background: var(--black);
+      border: 2px solid var(--neon-purple);
+      color: var(--white);
+      padding: 0.4rem 1rem;
+      border-radius: 1.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: var(--neon-purple);
+      box-shadow: 0 0 12px var(--neon-purple);
+    }
+
+    .action-btn.primary {
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+      border-color: var(--neon-pink);
+    }
+
+    .action-btn.primary:hover {
+      box-shadow: 0 0 16px var(--neon-pink);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: var(--neon-pink);
+      color: var(--white);
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--light-gray);
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-state-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--white);
+    }
+
+    .empty-state-message {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* Bottom navbar styles */
+    .bottom-navbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      background: var(--black);
+      box-shadow: 0 -2px 16px 0 rgba(162,89,255,0.12);
+      z-index: 100;
+      border-top-left-radius: 1.2rem;
+      border-top-right-radius: 1.2rem;
+    }
+
+    .bottom-nav-list {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 0;
+      padding: 0.5em 0 0.2em 0;
+      list-style: none;
+    }
+
+    .bottom-nav-list li {
+      flex: 1;
+      text-align: center;
+    }
+
+    .bottom-nav-list a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 0.3em 0;
+      transition: color 0.2s;
+    }
+
+    .bottom-nav-list li.active a,
+    .bottom-nav-list a:hover {
+      color: var(--neon-pink);
+    }
+
+    .nav-icon {
+      font-size: 1.5em;
+      margin-bottom: 0.1em;
+    }
+
+    /* Enhanced active tab highlight */
+    .bottom-nav-list li.active a {
+      color: var(--neon-pink);
+      background: rgba(162, 89, 255, 0.18);
+      border-radius: 1.2em;
+      box-shadow: 0 0 12px var(--neon-pink), 0 0 4px var(--neon-purple);
+      position: relative;
+      z-index: 1;
+    }
+
+    .bottom-nav-list li.active .nav-icon {
+      transform: scale(1.2);
+      text-shadow: 0 0 12px var(--neon-pink), 0 0 4px var(--neon-purple);
+      transition: transform 0.2s, text-shadow 0.2s;
+    }
+
+    @media (max-width: 500px) {
+      .notifications-container {
+        padding: 0.8rem;
+      }
+      
+      .notifications-title {
+        font-size: 1.5rem;
+      }
+      
+      .filter-tabs {
+        gap: 0.3rem;
+      }
+      
+      .filter-tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="notifications-container">
+    <!-- Header -->
+    <div class="notifications-header">
+      <h1 class="notifications-title">Notifications</h1>
+      <div class="notifications-count">12</div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="events">Events</button>
+      <button class="filter-tab" data-filter="social">Social</button>
+      <button class="filter-tab" data-filter="system">System</button>
+      <button class="filter-tab" data-filter="unread">Unread</button>
+    </div>
+
+    <!-- Notifications List -->
+    <div class="notifications-list" id="notificationsList">
+      <!-- Event Notifications -->
+      <div class="notification-item unread" data-category="events">
+        <div class="notification-badge">3</div>
+        <div class="notification-header">
+          <div class="notification-avatar">🎉</div>
+          <div class="notification-content">
+            <div class="notification-title">Neon Rave Tonight!</div>
+            <div class="notification-message">Your event "Neon Rave" starts in 2 hours. 47 people are attending!</div>
+            <div class="notification-time">2 hours ago</div>
+          </div>
+        </div>
+        <div class="notification-actions">
+          <button class="action-btn primary">View Event</button>
+          <button class="action-btn">Dismiss</button>
+        </div>
+      </div>
+
+      <div class="notification-item" data-category="events">
+        <div class="notification-header">
+          <div class="notification-avatar">🎫</div>
+          <div class="notification-content">
+            <div class="notification-title">New Event Invitation</div>
+            <div class="notification-message">DJ Neon invited you to "Silent Disco" this Saturday at 9 PM</div>
+            <div class="notification-time">4 hours ago</div>
+          </div>
+        </div>
+        <div class="notification-actions">
+          <button class="action-btn primary">Accept</button>
+          <button class="action-btn">Decline</button>
+        </div>
+      </div>
+
+      <!-- Social Notifications -->
+      <div class="notification-item unread" data-category="social">
+        <div class="notification-header">
+          <div class="notification-avatar">👥</div>
+          <div class="notification-content">
+            <div class="notification-title">New Follower</div>
+            <div class="notification-message">Sarah Chen started following you. You have 3 mutual friends.</div>
+            <div class="notification-time">6 hours ago</div>
+          </div>
+        </div>
+        <div class="notification-actions">
+          <button class="action-btn primary">Follow Back</button>
+          <button class="action-btn">View Profile</button>
+        </div>
+      </div>
+
+      <div class="notification-item" data-category="social">
+        <div class="notification-header">
+          <div class="notification-avatar">💬</div>
+          <div class="notification-content">
+            <div class="notification-title">New Message</div>
+            <div class="notification-message">Alex Kim sent you a message: "Hey! Are you going to the LAN party?"</div>
+            <div class="notification-time">1 day ago</div>
+          </div>
+        </div>
+        <div class="notification-actions">
+          <button class="action-btn primary">Reply</button>
+          <button class="action-btn">View Chat</button>
+        </div>
+      </div>
+
+      <!-- System Notifications -->
+      <div class="notification-item" data-category="system">
+        <div class="notification-header">
+          <div class="notification-avatar">⚙️</div>
+          <div class="notification-content">
+            <div class="notification-title">App Update Available</div>
+            <div class="notification-message">New features available! Update to get the latest party features.</div>
+            <div class="notification-time">2 days ago</div>
+          </div>
+        </div>
+        <div class="notification-actions">
+          <button class="action-btn primary">Update Now</button>
+          <button class="action-btn">Later</button>
+        </div>
+      </div>
+
+      <div class="notification-item" data-category="system">
+        <div class="notification-header">
+          <div class="notification-avatar">🎊</div>
+          <div class="notification-content">
+            <div class="notification-title">Achievement Unlocked!</div>
+            <div class="notification-message">Congratulations! You've hosted 10 events. You're now a "Party Master"!</div>
+            <div class="notification-time">3 days ago</div>
+          </div>
+        </div>
+        <div class="notification-actions">
+          <button class="action-btn primary">View Badge</button>
+          <button class="action-btn">Share</button>
+        </div>
+      </div>
+
+      <div class="notification-item" data-category="events">
+        <div class="notification-header">
+          <div class="notification-avatar">📸</div>
+          <div class="notification-content">
+            <div class="notification-title">New Photos from "Poolside Beats"</div>
+            <div class="notification-message">DJ Aqua shared 12 new photos from the pool party last weekend.</div>
+            <div class="notification-time">4 days ago</div>
+          </div>
+        </div>
+        <div class="notification-actions">
+          <button class="action-btn primary">View Photos</button>
+          <button class="action-btn">Save</button>
+        </div>
+      </div>
+
+      <div class="notification-item" data-category="social">
+        <div class="notification-header">
+          <div class="notification-avatar">🏆</div>
+          <div class="notification-content">
+            <div class="notification-title">Event Success!</div>
+            <div class="notification-message">Your "Retro LAN" event was a huge success! 89 people attended.</div>
+            <div class="notification-time">1 week ago</div>
+          </div>
+        </div>
+        <div class="notification-actions">
+          <button class="action-btn primary">View Stats</button>
+          <button class="action-btn">Share</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navbar -->
+  <nav class="bottom-navbar">
+    <ul class="bottom-nav-list">
+      <li><a href="home.html"><span class="nav-icon">🏠</span></a></li>
+      <li><a href="my_events.html"><span class="nav-icon">🎫</span></a></li>
+      <li><a href="social.html"><span class="nav-icon">👥</span></a></li>
+      <li class="active"><a href="notifications.html"><span class="nav-icon">📥</span></a></li>
+      <li><a href="profile.html"><span class="nav-icon">🙎‍♂️</span></a></li>
+    </ul>
+  </nav>
+
+  <script>
+    // Filter functionality
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const notificationItems = document.querySelectorAll('.notification-item');
+
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs
+        filterTabs.forEach(t => t.classList.remove('active'));
+        // Add active class to clicked tab
+        tab.classList.add('active');
+
+        const filter = tab.getAttribute('data-filter');
+        
+        notificationItems.forEach(item => {
+          const category = item.getAttribute('data-category');
+          const isUnread = item.classList.contains('unread');
+          
+          if (filter === 'all') {
+            item.style.display = 'block';
+          } else if (filter === 'unread') {
+            item.style.display = isUnread ? 'block' : 'none';
+          } else {
+            item.style.display = category === filter ? 'block' : 'none';
+          }
+        });
+      });
+    });
+
+    // Mark as read functionality
+    notificationItems.forEach(item => {
+      const dismissBtn = item.querySelector('.action-btn:not(.primary)');
+      if (dismissBtn && dismissBtn.textContent === 'Dismiss') {
+        dismissBtn.addEventListener('click', () => {
+          item.classList.remove('unread');
+          const badge = item.querySelector('.notification-badge');
+          if (badge) {
+            badge.remove();
+          }
+          // Update notification count
+          const countElement = document.querySelector('.notifications-count');
+          const currentCount = parseInt(countElement.textContent);
+          countElement.textContent = Math.max(0, currentCount - 1);
+        });
+      }
+    });
+
+    // Action button functionality
+    document.querySelectorAll('.action-btn.primary').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.notification-item');
+        if (item.classList.contains('unread')) {
+          item.classList.remove('unread');
+          const badge = item.querySelector('.notification-badge');
+          if (badge) {
+            badge.remove();
+          }
+          // Update notification count
+          const countElement = document.querySelector('.notifications-count');
+          const currentCount = parseInt(countElement.textContent);
+          countElement.textContent = Math.max(0, currentCount - 1);
+        }
+      });
+    });
+
+    // Check authentication status using JWT and backend
+    async function checkAuth() {
+      const token = localStorage.getItem('lanverse_token');
+      if (!token) {
+        window.location.href = 'auth.html';
+        return null;
+      }
+      
+      try {
+        const res = await fetch('/api/profile', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) {
+          localStorage.removeItem('lanverse_token');
+          window.location.href = 'auth.html';
+          return null;
+        }
+        return await res.json();
+      } catch (error) {
+        localStorage.removeItem('lanverse_token');
+        window.location.href = 'auth.html';
+        return null;
+      }
+    }
+    
+    // Initialize auth check
+    checkAuth();
+  </script>
+  <script src="assets/js/standalone-enforcer.js"></script>
+</body>
+</html>
